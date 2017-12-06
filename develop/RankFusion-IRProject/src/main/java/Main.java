@@ -1,20 +1,11 @@
+import InputOutput.Loader;
+import java.io.FileNotFoundException;
+
 /**
  * Author: davide
  * Github Name: drigoni
  * Date: 06/12/17
- */
-
-import InputOutput.Loader;
-import InputOutput.Writer;
-import RunObject.Element;
-import RunObject.Run;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-
-/**
+ *
  * Main of the program
  */
 public class Main {

@@ -1,13 +1,5 @@
-/**
- * Author: davide
- * Github Name: drigoni
- * Date: 06/12/17
- */
-
 package InputOutput;
 
-
-import RunObject.Element;
 import RunObject.Run;
 import java.io.File;
 import java.io.FileWriter;
@@ -16,6 +8,10 @@ import java.io.PrintWriter;
 import java.util.List;
 
 /**
+ * Author: davide
+ * Github Name: drigoni
+ * Date: 06/12/17
+ *
  * This class saves a RunObject
  */
 public class Writer {

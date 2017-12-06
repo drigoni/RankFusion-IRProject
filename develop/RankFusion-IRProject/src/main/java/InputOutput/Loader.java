@@ -1,9 +1,3 @@
-/**
- * Author: davide
- * Github Name: drigoni
- * Date: 06/12/17
- */
-
 package InputOutput;
 
 import java.io.FileNotFoundException;
@@ -14,9 +8,11 @@ import java.io.File;
 import java.util.Scanner;
 import RunObject.*;
 
-
-
 /**
+ * Author: davide
+ * Github Name: drigoni
+ * Date: 06/12/17
+ *
  * This class loads the data in the run files
  */
 public class Loader {

@@ -1,12 +1,10 @@
+package RunObject;
+
 /**
  * Author: davide
  * Github Name: drigoni
  * Date: 06/12/17
- */
-
-package RunObject;
-
-/**
+ *
  * This class represents the element inside the run
  */
 public class Element {

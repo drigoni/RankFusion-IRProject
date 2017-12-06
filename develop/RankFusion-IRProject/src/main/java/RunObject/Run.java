@@ -1,13 +1,14 @@
-/**
- * Author: davide
- * Github Name: drigoni
- * Date: 06/12/17
- */
-
 package RunObject;
 
 import java.util.List;
 
+/**
+ * Author: davide
+ * Github Name: drigoni
+ * Date: 06/12/17
+ *
+ * This class represent the run file data
+ */
 public class Run {
 
     /**
