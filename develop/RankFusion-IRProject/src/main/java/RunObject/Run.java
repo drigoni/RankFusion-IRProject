@@ -1,12 +1,13 @@
-package Run;
-
-import java.util.List;
-
 /**
  * Author: davide
  * Github Name: drigoni
  * Date: 06/12/17
  */
+
+package RunObject;
+
+import java.util.List;
+
 public class Run {
 
     /**
@@ -24,7 +25,19 @@ public class Run {
      * @param name  Name of the file
      */
     public Run(String name,  List<Element> listOfRow){
+        this.name = name;
         this.listOfRow = listOfRow;
+    }
+
+    @Override
+    public String toString(){
+        String s = "";
+        for(int i = 0; i < listOfRow.size(); i++){
+            if(i > 0)
+                s+= "\r\n";
+            s+= listOfRow.get(i);
+        }
+        return s;
     }
 
     //--------------------------------------------------------------------------
@@ -38,6 +51,14 @@ public class Run {
      */
     public String getName(){
         return this.name;
+    }
+
+    /**
+     * Allow access to the size of the list listOfRow
+     * @return The size of the list listOfRow
+     */
+    public int getSize(){
+        return this.listOfRow.size();
     }
 
     /**

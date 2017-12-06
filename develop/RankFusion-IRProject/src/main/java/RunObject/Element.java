@@ -1,10 +1,10 @@
-package Run;
-
 /**
  * Author: davide
  * Github Name: drigoni
  * Date: 06/12/17
  */
+
+package RunObject;
 
 /**
  * This class represents the element inside the run
@@ -59,6 +59,13 @@ public class Element {
         this.model = model;
     }
 
+    @Override
+    public String toString(){
+
+        return this.getTopic() + " " + this.getQuery() + " " +
+                this.getDocument() + " " + this.getRank() + " " +
+                this.getScore() + " " + this.getModel();
+    }
 
     //--------------------------------------------------------------------------
     //----------------------------- GETTERS ------------------------------------
