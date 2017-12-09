@@ -13,7 +13,6 @@ public interface INormalize {
     /**
      * This method normalizes the runs
      * @param listOfRun RunList
-     * @return RunList with normalization values
      */
-    RunList execute(RunList listOfRun);
+    void execute(RunList listOfRun);
 }

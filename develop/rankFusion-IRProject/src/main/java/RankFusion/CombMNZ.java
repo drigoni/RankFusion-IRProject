@@ -28,9 +28,7 @@ public class CombMNZ extends AbsRankFusion{
                 // Add element to the list in order to generate the fusion
                 if(max != null)
                     elementList.add(max);
-                System.out.println("Element: " + max);
             }
-            break;
         }
 
         Run finalRun = new Run("CombMNZ", elementList, true);
