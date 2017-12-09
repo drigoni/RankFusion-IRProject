@@ -22,15 +22,18 @@ public class CombMNZ extends AbsRankFusion{
         // Get all document in the RunList
         List<String> documentList = runList.getAllDocumentNames();
         for (String name: documentList){
-            Element[] elements = runList.getElements(name);
-            Element max = SumMNZ(elements);
-            // Add element to the list in order to generate the fusion
-            elementList.add(max);
-
+            Element[][] elements = runList.getElements(name);
+            for(Element[] curTopic: elements) {
+                Element max = SumMNZ(curTopic);
+                // Add element to the list in order to generate the fusion
+                if(max != null)
+                    elementList.add(max);
+                System.out.println("Element: " + max);
+            }
             break;
         }
 
-        Run finalRun = new Run("CombMax", elementList, true);
+        Run finalRun = new Run("CombMNZ", elementList, true);
         return finalRun;
     }
 
@@ -41,7 +44,7 @@ public class CombMNZ extends AbsRankFusion{
      */
     private Element SumMNZ(Element[] elements){
         // Index used to copy the element
-        int lastIndex = 0;
+        int lastIndex = -1;
         int nonZeroCount = 0;
         double sum = 0;
 
@@ -66,11 +69,16 @@ public class CombMNZ extends AbsRankFusion{
             }
         }
 
-        // Make a new Element copying some data from another one
-        Element newEl = elements[lastIndex].deepCopy();
-        newEl.setScore(sum / nonZeroCount);
-        newEl.setModel("CombMNZ");
+        if(lastIndex != -1) {
+            // Make a new Element copying some data from another one
+            Element newEl = elements[lastIndex].deepCopy();
+            newEl.setScore(sum * nonZeroCount);
+            newEl.setModel("CombMNZ");
 
-        return newEl;
+            return newEl;
+        } else{
+            return null;
+        }
+
     }
 }

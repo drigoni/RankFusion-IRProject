@@ -55,7 +55,7 @@ public class Writer {
         PrintWriter wr = new PrintWriter(f);
         if(inTime) {
             for(int i=0; i < run.getSize(); i++){
-                wr.println(run.getElement(i));
+                wr.println(run.get(i));
             }
         } else{
             wr.print(run);

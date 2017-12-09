@@ -91,13 +91,19 @@ public class Element  implements Comparable<Element>{
      */
     public int compareTo(Element el) {
         double diff = this.getScore() - el.getScore();
-        if(diff > 0 )
+        if(Integer.parseInt(this.getTopic()) > Integer.parseInt(el.getTopic())) {
             return 1;
-        else
-        if(diff < 0){
+        }else if(Integer.parseInt(this.getTopic()) <
+                Integer.parseInt(el.getTopic())) {
             return -1;
-        }else{
-            return 0;
+        }else {
+            if (diff > 0)
+                return 1;
+            else if (diff < 0) {
+                return -1;
+            } else {
+                return 0;
+            }
         }
     }
 

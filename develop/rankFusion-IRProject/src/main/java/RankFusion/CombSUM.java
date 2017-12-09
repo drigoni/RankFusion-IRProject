@@ -20,13 +20,18 @@ public class CombSUM extends AbsRankFusion{
         // Get all document in the RunList
         List<String> documentList = runList.getAllDocumentNames();
         for (String name: documentList){
-            Element[] elements = runList.getElements(name);
-            Element max = Sum(elements);
-            // Add element to the list in order to generate the fusion
-            elementList.add(max);
+            Element[][] elements = runList.getElements(name);
+            for(Element[] curTopic: elements) {
+                Element max = Sum(curTopic);
+                // Add element to the list in order to generate the fusion
+                if(max != null)
+                    elementList.add(max);
+                System.out.println("Element: " + max);
+            }
+            break;
         }
 
-        Run finalRun = new Run("CombMax", elementList, true);
+        Run finalRun = new Run("CombSUM", elementList, true);
         return finalRun;
     }
 
@@ -37,7 +42,7 @@ public class CombSUM extends AbsRankFusion{
      */
     private Element Sum(Element[] elements){
         // Index used to copy the element
-        int lastIndex = 0;
+        int lastIndex = -1;
         double sum = 0;
 
         for(int i = 0 ; i < elements.length; i++){
@@ -58,11 +63,15 @@ public class CombSUM extends AbsRankFusion{
             }
         }
 
-        // Make a new Element copying some data from another one
-        Element newEl = elements[lastIndex].deepCopy();
-        newEl.setScore(sum);
-        newEl.setModel("CombSUM");
+        if(lastIndex != -1) {
+            // Make a new Element copying some data from another one
+            Element newEl = elements[lastIndex].deepCopy();
+            newEl.setScore(sum);
+            newEl.setModel("CombSUM");
 
-        return newEl;
+            return newEl;
+        }else{
+            return null;
+        }
     }
 }

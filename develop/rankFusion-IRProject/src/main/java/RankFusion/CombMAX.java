@@ -22,13 +22,18 @@ public class CombMAX extends AbsRankFusion{
         // Get all document in the RunList
         List<String> documentList = runList.getAllDocumentNames();
         for (String name: documentList){
-            Element[] elements = runList.getElements(name);
-            Element max = Max(elements);
-            // Add element to the list in order to generate the fusion
-            elementList.add(max);
+            Element[][] elements = runList.getElements(name);
+            for(Element[] curTopic: elements) {
+                Element max = Max(curTopic);
+                // Add element to the list in order to generate the fusion
+                if(max != null)
+                    elementList.add(max);
+                System.out.println("Element: " + max);
+            }
+            break;
         }
 
-        Run finalRun = new Run("CombMax", elementList, true);
+        Run finalRun = new Run("CombMAX", elementList, true);
         return finalRun;
     }
 
@@ -40,6 +45,7 @@ public class CombMAX extends AbsRankFusion{
      * @return  The element with max score
      */
     private Element Max(Element[] elements){
+        int lastIndex = -1;
         int maxIndex = 0;
         double maxScore = Double.MIN_VALUE;
 
@@ -48,8 +54,10 @@ public class CombMAX extends AbsRankFusion{
             // Unretrieved documents are assigned a relevance score of 0
             if(elements[i] == null)
                 v = 0;
-            else
+            else {
                 v = elements[i].getScore();
+                lastIndex = i;
+            }
 
             // Check for max
             if(v > maxScore) {
@@ -57,7 +65,10 @@ public class CombMAX extends AbsRankFusion{
                 maxIndex = i;
             }
         }
-
-        return elements[maxIndex];
+        if(lastIndex != -1)
+            return elements[maxIndex];
+        else{
+            return null;
+        }
     }
 }

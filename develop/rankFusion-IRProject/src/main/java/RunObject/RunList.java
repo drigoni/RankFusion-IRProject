@@ -42,20 +42,32 @@ public class RunList implements Iterable<Run> {
      */
     public Run get(String runName){
         for (Run run: listOfRun) {
-            if (run.getName() == runName)
+            if (run.getName().equals(runName))
                 return run;
         }
         return null;
     }
 
-    /**
-     * This method removes a Run in the list
-     * @param i Index
-     */
-    public void remove(int i){
-        this.listOfRun.remove(i);
-    }
 
+    /**
+     * This method search the document inside all the runs
+     * @param documentName Name of the document to search
+     * @param topicID Topic ID
+     * @return  An array fo result or null if it is not inside at least one run.
+     *          The array has the size of the number of Run and the
+     *          corresponding values are null if the document is not present.
+     */
+    public Element[] getElements(String documentName, String topicID){
+        if(this.listOfRun.size() == 0){
+            return null;
+        } else {
+            Element[] values = new Element[this.listOfRun.size()];
+            for (int i = 0; i < listOfRun.size(); i++) {
+                values[i] = listOfRun.get(i).get(documentName, topicID);
+            }
+            return values;
+        }
+    }
 
     /**
      * This method search the document inside all the runs
@@ -64,12 +76,25 @@ public class RunList implements Iterable<Run> {
      *          The array has the size of the number of Run and the
      *          corresponding values are null if the document is not present.
      */
-    public Element[] getElements(String documentName){
-        Element[] values = new Element[this.listOfRun.size()];
-        for(int i = 0; i < listOfRun.size(); i++){
-            values[i] = listOfRun.get(i).getElement(documentName);
+    public Element[][] getElements(String documentName){
+        // All topics are the same in each run
+        if(this.listOfRun.size() == 0) {
+            return null;
+        } else{
+            String[] topics = this.listOfRun.get(0).getTopics();
+            int nTopics = topics.length;
+            int nRun = this.listOfRun.size();
+
+            Element[][] resultMatrix =
+                    new Element[nTopics][nRun];
+            for (int i = 0; i < nTopics; i++) {
+                for(int j = 0; j < nRun; j++){
+                    resultMatrix[i][j] = this.listOfRun.get(j).
+                            get(documentName, topics[i]);
+                }
+            }
+            return resultMatrix;
         }
-        return values;
     }
 
     /**
@@ -80,8 +105,9 @@ public class RunList implements Iterable<Run> {
         List<String> list = new ArrayList<String>();
         for(Run run: listOfRun){
            for (Element el: run){
-               if(!list.contains(el.getDocument())){
-                   list.add(el.getDocument());
+               String doc = el.getDocument();
+               if(!list.contains(doc)){
+                   list.add(doc);
                }
            }
         }
