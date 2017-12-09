@@ -1,7 +1,8 @@
 package RankFusion;
 
 import RunObject.Run;
-import java.util.List;
+import RunObject.RunList;
+
 
 /**
  * Author: davide
@@ -14,8 +15,8 @@ public interface IRankFusion {
 
     /**
      * This method fuse all the runs in order to create a new one
-     * @param listOfRun List of all the runs
+     * @param runList List of all the runs
      * @return  The new fuse run
      */
-    Run Fuse(List<Run> listOfRun);
+    Run Fuse(RunList runList);
 }

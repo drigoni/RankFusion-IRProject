@@ -7,7 +7,7 @@ package RunObject;
  *
  * This class represents the element inside the run
  */
-public class Element {
+public class Element  implements Comparable<Element>{
     /**
      * This field represents the topic of the query
      */
@@ -115,5 +115,22 @@ public class Element {
      */
     public String getModel(){
         return this.model;
+    }
+
+    /**
+     * Implementation of the comparable interface
+     * @param el Element
+     * @return The value
+     */
+    public int compareTo(Element el) {
+        double diff = this.getScore() - el.getScore();
+        if(diff > 0 )
+            return 1;
+        else
+            if(diff < 0){
+                return -1;
+            }else{
+                return 0;
+            }
     }
 }

@@ -1,11 +1,12 @@
 package InputOutput;
 
 import RunObject.Run;
+import RunObject.RunList;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
+
 
 /**
  * Author: davide
@@ -34,9 +35,9 @@ public class Writer {
 
     /**
      * Save the list of Run in the folder
-     * @param runs List of run object
+     * @param runs RunList of run object
      */
-    public void Save(List<Run> runs) throws IOException {
+    public void Save(RunList runs) throws IOException {
         for(Run run: runs){
             this.Save(run);
         }

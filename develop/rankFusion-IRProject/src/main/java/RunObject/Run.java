@@ -1,5 +1,8 @@
 package RunObject;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -9,7 +12,7 @@ import java.util.List;
  *
  * This class represent the run file data
  */
-public class Run {
+public class Run implements Iterable<Element>{
 
     /**
      * This field represents the name of the run
@@ -69,5 +72,20 @@ public class Run {
      */
     public Element getElement(int index){
         return this.listOfRow.get(index);
+    }
+
+    /**
+     * This method sort the Run element by score
+     */
+    public void sort(){
+        Collections.sort(this.listOfRow);
+    }
+
+    /**
+     * Implementation of the iterable interface
+     * @return An iterator of Element
+     */
+    public Iterator<Element> iterator() {
+        return listOfRow.iterator();
     }
 }

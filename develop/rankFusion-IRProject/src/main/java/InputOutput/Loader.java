@@ -33,10 +33,10 @@ public class Loader {
 
     /**
      * This class execute the parser of the files of the runs
-     * @return List of RunObject
+     * @return RunList of Run
      */
-    public List<Run> StartLoad() throws FileNotFoundException {
-        List<Run> results = new ArrayList<Run>();
+    public RunList StartLoad() throws FileNotFoundException {
+        RunList results = new RunList();
         if(this.path.isDirectory()) {
             List<File> files = this.OpenFolder(this.path);
             results = this.LoadAll(files);
@@ -72,10 +72,10 @@ public class Loader {
     /***
      * This class load all the files
      * @param list List of files
-     * @return  List of run
+     * @return  RunList of run
      */
-    private List<Run> LoadAll(List<File> list) throws FileNotFoundException {
-        List<Run> results = new ArrayList<Run>();
+    private RunList LoadAll(List<File> list) throws FileNotFoundException {
+        RunList results = new RunList();
         for(File file: list){
             results.add(this.Load(file));
         }

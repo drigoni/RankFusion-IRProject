@@ -1,19 +1,19 @@
 package Normalize;
 
-import RunObject.Run;
+import RunObject.RunList;
 
 /**
  * Author: davide
  * Github Name: drigoni
  * Date: 06/12/17
  *
- * This interface represent he Normalization algorithms public contract
+ * This interface represent the normalization algorithms public contract
  */
 public interface INormalize {
     /**
-     * This method normalizes the scores between runs
-     * @param run Run
-     * @return Run with normalization values
+     * This method normalizes the runs
+     * @param listOfRun RunList
+     * @return RunList with normalization values
      */
-    Run execute(Run run);
+    RunList execute(RunList listOfRun);
 }
