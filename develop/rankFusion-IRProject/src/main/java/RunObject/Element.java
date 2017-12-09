@@ -57,12 +57,48 @@ public class Element  implements Comparable<Element>{
         this.model = model;
     }
 
+    /**
+     * Constructor
+     * @param topic Topic of the query
+     * @param query Number of the query
+     * @param document  Name of the document
+     * @param rank  Rank of the document
+     * @param score Score of the document
+     * @param model   Model uses for the query
+     */
+    public Element(String topic, String query, String document, int rank,
+                   double score, String model){
+        this.topic = topic;
+        this.query = query;
+        this.document = document;
+        this.rank = rank;
+        this.score = score;
+        this.model = model;
+    }
+
     @Override
     public String toString(){
 
         return this.getTopic() + " " + this.getQuery() + " " +
                 this.getDocument() + " " + this.getRank() + " " +
                 this.getScore() + " " + this.getModel();
+    }
+
+    /**
+     * Implementation of the comparable interface
+     * @param el Element
+     * @return The value
+     */
+    public int compareTo(Element el) {
+        double diff = this.getScore() - el.getScore();
+        if(diff > 0 )
+            return 1;
+        else
+        if(diff < 0){
+            return -1;
+        }else{
+            return 0;
+        }
     }
 
     //--------------------------------------------------------------------------
@@ -118,19 +154,39 @@ public class Element  implements Comparable<Element>{
     }
 
     /**
-     * Implementation of the comparable interface
-     * @param el Element
-     * @return The value
+     * This method make a deep copy of this object
+     * @return New Element
      */
-    public int compareTo(Element el) {
-        double diff = this.getScore() - el.getScore();
-        if(diff > 0 )
-            return 1;
-        else
-            if(diff < 0){
-                return -1;
-            }else{
-                return 0;
-            }
+    public Element deepCopy(){
+        return new Element(this.topic, this.query, this.document, this.rank,
+                this.score, this.model);
+    }
+
+    //--------------------------------------------------------------------------
+    //----------------------------- SETTERS ------------------------------------
+    //--------------------------------------------------------------------------
+
+    /**
+     * Allow access to the private field score
+     * @param score Score
+     */
+    public void setScore(double score){
+        this.score = score;
+    }
+
+    /**
+     * Allow access to the private field score
+     * @param rank Rank
+     */
+    public void setRank(int rank){
+        this.rank = rank;
+    }
+
+    /**
+     * Allow access to the private field score
+     * @param model Model
+     */
+    public void setModel(String model){
+        this.model = model;
     }
 }

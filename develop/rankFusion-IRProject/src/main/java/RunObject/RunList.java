@@ -56,6 +56,39 @@ public class RunList implements Iterable<Run> {
         this.listOfRun.remove(i);
     }
 
+
+    /**
+     * This method search the document inside all the runs
+     * @param documentName Name of the document to search
+     * @return  An array fo result or null if it is not inside at least one run.
+     *          The array has the size of the number of Run and the
+     *          corresponding values are null if the document is not present.
+     */
+    public Element[] getElements(String documentName){
+        Element[] values = new Element[this.listOfRun.size()];
+        for(int i = 0; i < listOfRun.size(); i++){
+            values[i] = listOfRun.get(i).getElement(documentName);
+        }
+        return values;
+    }
+
+    /**
+     * This method returns all the documents name in all the runs
+     * @return The list of the document name
+     */
+    public List<String> getAllDocumentNames(){
+        List<String> list = new ArrayList<String>();
+        for(Run run: listOfRun){
+           for (Element el: run){
+               if(!list.contains(el.getDocument())){
+                   list.add(el.getDocument());
+               }
+           }
+        }
+
+        return list;
+    }
+
     /**
      * Implementation of the iterable interface
      * @return An iterator of Element

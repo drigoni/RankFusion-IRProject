@@ -1,6 +1,5 @@
 package RunObject;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -27,10 +26,22 @@ public class Run implements Iterable<Element>{
     /**
      * Constructor
      * @param name  Name of the file
+     * @param listOfRow List of Element
      */
     public Run(String name,  List<Element> listOfRow){
         this.name = name;
         this.listOfRow = listOfRow;
+    }
+
+    /**
+     * Constructor
+     * @param name  Name of the file
+     * @param listOfRow List of Element
+     * @param sort True if the run should be sorted
+     */
+    public Run(String name,  List<Element> listOfRow, boolean sort){
+        this(name,listOfRow);
+        this.sort();
     }
 
     @Override
@@ -42,6 +53,15 @@ public class Run implements Iterable<Element>{
             s+= listOfRow.get(i);
         }
         return s;
+    }
+
+    /**
+     * This method sort the Run element by score and update the rank
+     */
+    public void sort(){
+        Collections.sort(this.listOfRow);
+        for(int i = 0; i<= listOfRow.size(); i++)
+            listOfRow.get(i).setRank(i+1);
     }
 
     //--------------------------------------------------------------------------
@@ -75,10 +95,30 @@ public class Run implements Iterable<Element>{
     }
 
     /**
-     * This method sort the Run element by score
+     * Allow access to the private field listOfRow
+     * @param documentName Document name
+     * @return  The Element or null if it is not present
      */
-    public void sort(){
-        Collections.sort(this.listOfRow);
+    public Element getElement(String documentName){
+        for(Element el: listOfRow){
+            if(el.getDocument().equals(documentName))
+                return el;
+        }
+        return null;
+    }
+
+    /**
+     * This method search the document score inside the Run
+     * @param documentName Name of the document to search
+     * @return  The score or null if it is not inside the Run
+     */
+    public Double getDocumentScore(String documentName){
+        for(Element el: listOfRow){
+            if(el.getDocument().equals(documentName)){
+                return el.getScore();
+            }
+        }
+        return null;
     }
 
     /**
