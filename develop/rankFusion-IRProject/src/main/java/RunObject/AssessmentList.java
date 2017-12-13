@@ -1,7 +1,6 @@
 package RunObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,17 +11,12 @@ import java.util.List;
  *
  * This class represent the run file data
  */
-public class Run implements Iterable<RunElement>{
+public class AssessmentList implements Iterable<AssessmentElement>{
 
     /**
-     * This field represents the name of the run
+     * This field represents the list of assessment element
      */
-    private String name;
-
-    /**
-     * This field represents the list of element inside the run
-     */
-    private List<RunElement> listOfRow;
+    private List<AssessmentElement> listOfRow;
 
     /**
      * This field represents the number of topics
@@ -36,25 +30,12 @@ public class Run implements Iterable<RunElement>{
 
     /**
      * Constructor
-     * @param name  Name of the file
-     * @param listOfRow List of RunElement
+     * @param listOfRow List of AssessmentElement
      */
-    public Run(String name,  List<RunElement> listOfRow){
-        this.name = name;
+    public AssessmentList(List<AssessmentElement> listOfRow){
         this.listOfRow = listOfRow;
         this.topics = this.getTopicsID();
         this.nTopics = this.topics.size();
-    }
-
-    /**
-     * Constructor
-     * @param name  Name of the file
-     * @param listOfRow List of RunElement
-     * @param sort True if the run should be sorted
-     */
-    public Run(String name, List<RunElement> listOfRow, boolean sort){
-        this(name,listOfRow);
-        this.sort();
     }
 
     @Override
@@ -69,20 +50,10 @@ public class Run implements Iterable<RunElement>{
     }
 
     /**
-     * This method sort the Run element by score and update the rank
-     */
-    public void sort(){
-        Collections.sort(this.listOfRow);
-        for(int i = 0; i< listOfRow.size(); i++)
-            listOfRow.get(i).setRank(i+1);
-        //TODO: resetta rank al cambio del topic
-    }
-
-    /**
      * Implementation of the iterable interface
-     * @return An iterator of RunElement
+     * @return An iterator of AssessmentElement
      */
-    public Iterator<RunElement> iterator() {
+    public Iterator<AssessmentElement> iterator() {
         return listOfRow.iterator();
     }
 
@@ -92,7 +63,7 @@ public class Run implements Iterable<RunElement>{
      */
     private List<String> getTopicsID(){
         List<String> list = new ArrayList<String>();
-        for(RunElement el: this.listOfRow){
+        for(AssessmentElement el: this.listOfRow){
             if(!list.contains(el.getTopic())){
                 list.add(el.getTopic());
             }
@@ -104,15 +75,6 @@ public class Run implements Iterable<RunElement>{
     //----------------------------- GETTERS ------------------------------------
     //--------------------------------------------------------------------------
 
-
-    /**
-     * Allow access to the private field name
-     * @return The name of the run
-     */
-    public String getName(){
-        return this.name;
-    }
-
     /**
      * Allow access to the size of the list listOfRow
      * @return The size of the list listOfRow
@@ -122,7 +84,7 @@ public class Run implements Iterable<RunElement>{
     }
 
     /**
-     * This methods returns the topics inside the run
+     * This methods returns the topics inside the assessment file
      * @return Topics
      */
     public String[] getTopics(){
@@ -130,7 +92,7 @@ public class Run implements Iterable<RunElement>{
     }
 
     /**
-     * This methods returns the number of topics inside the run
+     * This methods returns the number of topics inside the assessment file
      * @return Number of topics
      */
     public int getNTopics(){
@@ -140,9 +102,9 @@ public class Run implements Iterable<RunElement>{
     /**
      * Allow access to the private field listOfRow
      * @param index Index
-     * @return  The RunElement
+     * @return  The assessmentElement
      */
-    public RunElement get(int index){
+    public AssessmentElement get(int index){
         return this.listOfRow.get(index);
     }
 
@@ -151,10 +113,10 @@ public class Run implements Iterable<RunElement>{
      * topic id
      * @param documentName Document name
      * @param topicID Id of the topic
-     * @return  The RunElement or null if it is not present
+     * @return  The assessmentElement or null if it is not present
      */
-    public RunElement get(String documentName, String topicID){
-        for(RunElement el: listOfRow){
+    public AssessmentElement get(String documentName, String topicID){
+        for(AssessmentElement el: listOfRow){
             if(el.getDocument().equals(documentName)
                     && el.getTopic().equals(topicID))
                 return el;
@@ -167,9 +129,9 @@ public class Run implements Iterable<RunElement>{
      * @param documentName Document name
      * @return  Elements for every topics or null if it is not present
      */
-    public RunElement[] get(String documentName){
+    public AssessmentElement[] get(String documentName){
         int size = this.getNTopics();
-        RunElement[] values = new RunElement[size];
+        AssessmentElement[] values = new AssessmentElement[size];
         for(int i = 0; i < this.listOfRow.size(); i++){
             if(listOfRow.get(i).getDocument().equals(documentName))
                 values[i] = listOfRow.get(i);

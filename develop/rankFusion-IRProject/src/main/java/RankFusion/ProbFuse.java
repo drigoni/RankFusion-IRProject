@@ -1,5 +1,6 @@
 package RankFusion;
 
+import RunObject.AssessmentList;
 import RunObject.Run;
 import RunObject.RunList;
 
@@ -13,7 +14,7 @@ import RunObject.RunList;
  */
 public class ProbFuse extends AbsRankFusion {
 
-    public Run Fuse(RunList runList) {
+    public Run Fuse(RunList runList, AssessmentList assessmentList) {
         return null;
     }
 }

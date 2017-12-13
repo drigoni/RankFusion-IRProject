@@ -1,6 +1,7 @@
 package RankFusion;
 
-import RunObject.Element;
+import RunObject.AssessmentList;
+import RunObject.RunElement;
 import RunObject.Run;
 import RunObject.RunList;
 
@@ -17,21 +18,21 @@ import java.util.List;
  */
 public class CombMNZ extends AbsRankFusion{
 
-    public Run Fuse(RunList runList){
-        List<Element> elementList = new ArrayList<Element>();
+    public Run Fuse(RunList runList, AssessmentList assessmentList){
+        List<RunElement> elementList = new ArrayList<RunElement>();
         // Get all document in the RunList
         List<String> documentList = runList.getAllDocumentNames();
         for (String name: documentList){
-            Element[][] elements = runList.getElements(name);
-            for(Element[] curTopic: elements) {
-                Element max = SumMNZ(curTopic);
+            RunElement[][] elements = runList.getElements(name);
+            for(RunElement[] curTopic: elements) {
+                RunElement max = SumMNZ(curTopic);
                 // Add element to the list in order to generate the fusion
                 if(max != null)
                     elementList.add(max);
             }
         }
 
-        Run finalRun = new Run("CombMNZ", elementList, true);
+        Run finalRun = new Run("CombMNZ.res", elementList, true);
         return finalRun;
     }
 
@@ -40,7 +41,7 @@ public class CombMNZ extends AbsRankFusion{
      * @param elements Array of elements
      * @return  The element with sumMNZ score
      */
-    private Element SumMNZ(Element[] elements){
+    private RunElement SumMNZ(RunElement[] elements){
         // Index used to copy the element
         int lastIndex = -1;
         int nonZeroCount = 0;
@@ -68,8 +69,8 @@ public class CombMNZ extends AbsRankFusion{
         }
 
         if(lastIndex != -1) {
-            // Make a new Element copying some data from another one
-            Element newEl = elements[lastIndex].deepCopy();
+            // Make a new RunElement copying some data from another one
+            RunElement newEl = elements[lastIndex].deepCopy();
             newEl.setScore(sum * nonZeroCount);
             newEl.setModel("CombMNZ");
 

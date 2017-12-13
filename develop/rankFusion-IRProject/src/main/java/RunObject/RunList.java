@@ -26,6 +26,11 @@ public class RunList implements Iterable<Run> {
         this.listOfRun.add(run);
     }
 
+
+    //--------------------------------------------------------------------------
+    //----------------------------- GETTERS ------------------------------------
+    //--------------------------------------------------------------------------
+
     /**
      * This method gets a Run in the list by its index
      * @param i Index
@@ -57,11 +62,11 @@ public class RunList implements Iterable<Run> {
      *          The array has the size of the number of Run and the
      *          corresponding values are null if the document is not present.
      */
-    public Element[] getElements(String documentName, String topicID){
+    public RunElement[] getElements(String documentName, String topicID){
         if(this.listOfRun.size() == 0){
             return null;
         } else {
-            Element[] values = new Element[this.listOfRun.size()];
+            RunElement[] values = new RunElement[this.listOfRun.size()];
             for (int i = 0; i < listOfRun.size(); i++) {
                 values[i] = listOfRun.get(i).get(documentName, topicID);
             }
@@ -76,7 +81,7 @@ public class RunList implements Iterable<Run> {
      *          The array has the size of the number of Run and the
      *          corresponding values are null if the document is not present.
      */
-    public Element[][] getElements(String documentName){
+    public RunElement[][] getElements(String documentName){
         // All topics are the same in each run
         if(this.listOfRun.size() == 0) {
             return null;
@@ -85,8 +90,8 @@ public class RunList implements Iterable<Run> {
             int nTopics = topics.length;
             int nRun = this.listOfRun.size();
 
-            Element[][] resultMatrix =
-                    new Element[nTopics][nRun];
+            RunElement[][] resultMatrix =
+                    new RunElement[nTopics][nRun];
             for (int i = 0; i < nTopics; i++) {
                 for(int j = 0; j < nRun; j++){
                     resultMatrix[i][j] = this.listOfRun.get(j).
@@ -104,7 +109,7 @@ public class RunList implements Iterable<Run> {
     public List<String> getAllDocumentNames(){
         List<String> list = new ArrayList<String>();
         for(Run run: listOfRun){
-           for (Element el: run){
+           for (RunElement el: run){
                String doc = el.getDocument();
                if(!list.contains(doc)){
                    list.add(doc);
@@ -117,7 +122,7 @@ public class RunList implements Iterable<Run> {
 
     /**
      * Implementation of the iterable interface
-     * @return An iterator of Element
+     * @return An iterator of RunElement
      */
     public Iterator<Run> iterator() {
         return listOfRun.iterator();

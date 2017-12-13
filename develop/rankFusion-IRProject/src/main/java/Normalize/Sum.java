@@ -1,6 +1,6 @@
 package Normalize;
 
-import RunObject.Element;
+import RunObject.RunElement;
 import RunObject.Run;
 import RunObject.RunList;
 
@@ -22,7 +22,7 @@ public class Sum extends  AbsNormalize{
 
             // Scale
             double sum = this.sumScore(run);
-            for (Element el : run) {
+            for (RunElement el : run) {
                 el.setScore(el.getScore() / sum);
             }
         }

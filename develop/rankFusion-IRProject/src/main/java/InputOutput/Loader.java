@@ -15,20 +15,14 @@ import RunObject.*;
  *
  * This class loads the data in the run files
  */
-public class Loader {
-
-    /**
-     * This field represents the path to the folder or to the file
-     */
-    private File path = null;
+public class Loader extends  AbsLoader{
 
     /**
      * Constructor
-     * @param pathToFolderStr String represents the path to the folder or to the
-     *                        file
+     * @param pathToFolderStr Path to folder
      */
     public Loader(String pathToFolderStr){
-        this.path = new File(pathToFolderStr);
+        super(pathToFolderStr);
     }
 
     /**
@@ -89,7 +83,7 @@ public class Loader {
      */
     private Run Load(File file) throws FileNotFoundException {
         String name = file.getName();
-        List<Element> elements = new ArrayList<Element>();
+        List<RunElement> elements = new ArrayList<RunElement>();
         Scanner scan = new Scanner(file);
         while(scan.hasNextLine()) {
             String line = scan.nextLine();
@@ -102,11 +96,12 @@ public class Loader {
     /**
      * This class load a row element given a line of the file
      * @param row row of the .res file
-     * @return Element object
+     * @return RunElement object
      */
-    private Element LoadRow(String row){
+    private RunElement LoadRow(String row){
         String[] values = row.split(" ");
-        return new Element(values[0], values[1], values[2], values[3],
+        return new RunElement(values[0], values[1], values[2], values[3],
                 values[4], values[5]);
     }
 }
+

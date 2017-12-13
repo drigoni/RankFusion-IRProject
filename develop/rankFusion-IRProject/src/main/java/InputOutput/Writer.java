@@ -46,7 +46,7 @@ public class Writer {
     /**
      * Save the Run in the folder
      * @param run Run object
-     * @param inTime TRUE implies that every Element are wrote when read
+     * @param inTime TRUE implies that every RunElement are wrote when read
      *               FALSE implies that the all Elements are wrote in the end
      */
     public void Save(Run run, Boolean inTime ) throws IOException {

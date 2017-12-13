@@ -1,5 +1,6 @@
 package RankFusion;
 
+import RunObject.AssessmentList;
 import RunObject.Run;
 import RunObject.RunList;
 
@@ -16,7 +17,8 @@ public interface IRankFusion {
     /**
      * This method fuse all the runs in order to create a new one
      * @param runList List of all the runs
+     * @param assessmentList Assessments
      * @return  The new fuse run
      */
-    Run Fuse(RunList runList);
+    Run Fuse(RunList runList, AssessmentList assessmentList);
 }

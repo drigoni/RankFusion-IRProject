@@ -7,7 +7,7 @@ package RunObject;
  *
  * This class represents the element inside the run
  */
-public class Element  implements Comparable<Element>{
+public class RunElement implements Comparable<RunElement>{
     /**
      * This field represents the topic of the query
      */
@@ -47,8 +47,8 @@ public class Element  implements Comparable<Element>{
      * @param score Score of the document
      * @param model   Model uses for the query
      */
-    public Element(String topic, String query, String document, String rank,
-                   String score, String model){
+    public RunElement(String topic, String query, String document, String rank,
+                      String score, String model){
         this.topic = topic;
         this.query = query;
         this.document = document;
@@ -66,8 +66,8 @@ public class Element  implements Comparable<Element>{
      * @param score Score of the document
      * @param model   Model uses for the query
      */
-    public Element(String topic, String query, String document, int rank,
-                   double score, String model){
+    public RunElement(String topic, String query, String document, int rank,
+                      double score, String model){
         this.topic = topic;
         this.query = query;
         this.document = document;
@@ -86,15 +86,14 @@ public class Element  implements Comparable<Element>{
 
     /**
      * Implementation of the comparable interface
-     * @param el Element
+     * @param el RunElement
      * @return The value
      */
-    public int compareTo(Element el) {
+    public int compareTo(RunElement el) {
         double diff = this.getScore() - el.getScore();
-        if(Integer.parseInt(this.getTopic()) > Integer.parseInt(el.getTopic())) {
+        if(this.getTopic().compareTo(el.getTopic()) >= 1) {
             return 1;
-        }else if(Integer.parseInt(this.getTopic()) <
-                Integer.parseInt(el.getTopic())) {
+        }else if(this.getTopic().compareTo(el.getTopic()) <= -1) {
             return -1;
         }else {
             if (diff > 0)
@@ -161,10 +160,10 @@ public class Element  implements Comparable<Element>{
 
     /**
      * This method make a deep copy of this object
-     * @return New Element
+     * @return New RunElement
      */
-    public Element deepCopy(){
-        return new Element(this.topic, this.query, this.document, this.rank,
+    public RunElement deepCopy(){
+        return new RunElement(this.topic, this.query, this.document, this.rank,
                 this.score, this.model);
     }
 

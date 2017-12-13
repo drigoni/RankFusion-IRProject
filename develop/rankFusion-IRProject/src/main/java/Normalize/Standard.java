@@ -1,6 +1,6 @@
 package Normalize;
 
-import RunObject.Element;
+import RunObject.RunElement;
 import RunObject.Run;
 import RunObject.RunList;
 
@@ -21,7 +21,7 @@ public class Standard extends  AbsNormalize{
 
             // Scale
             double max = this.maxScore(run);
-            for(Element el: run){
+            for(RunElement el: run){
                 el.setScore(el.getScore() / max);
             }
         }

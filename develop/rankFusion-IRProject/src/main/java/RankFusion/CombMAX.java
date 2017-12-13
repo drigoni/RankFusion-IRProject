@@ -1,6 +1,7 @@
 package RankFusion;
 
-import RunObject.Element;
+import RunObject.AssessmentList;
+import RunObject.RunElement;
 import RunObject.Run;
 import RunObject.RunList;
 
@@ -17,21 +18,21 @@ import java.util.List;
  */
 public class CombMAX extends AbsRankFusion{
 
-    public Run Fuse(RunList runList){
-        List<Element> elementList = new ArrayList<Element>();
+    public Run Fuse(RunList runList, AssessmentList assessmentList){
+        List<RunElement> elementList = new ArrayList<RunElement>();
         // Get all document in the RunList
         List<String> documentList = runList.getAllDocumentNames();
         for (String name: documentList){
-            Element[][] elements = runList.getElements(name);
-            for(Element[] curTopic: elements) {
-                Element max = Max(curTopic);
+            RunElement[][] elements = runList.getElements(name);
+            for(RunElement[] curTopic: elements) {
+                RunElement max = Max(curTopic);
                 // Add element to the list in order to generate the fusion
                 if(max != null)
                     elementList.add(max);
             }
         }
 
-        Run finalRun = new Run("CombMAX", elementList, true);
+        Run finalRun = new Run("CombMAX.res", elementList, true);
         return finalRun;
     }
 
@@ -42,7 +43,7 @@ public class CombMAX extends AbsRankFusion{
      * @param elements Array of elements
      * @return  The element with max score
      */
-    private Element Max(Element[] elements){
+    private RunElement Max(RunElement[] elements){
         int lastIndex = -1;
         int maxIndex = 0;
         double maxScore = Double.MIN_VALUE;
