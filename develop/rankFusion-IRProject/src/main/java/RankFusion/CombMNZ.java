@@ -21,7 +21,7 @@ public class CombMNZ extends AbsRankFusion{
     public Run Fuse(RunList runList, AssessmentList assessmentList){
         List<RunElement> elementList = new ArrayList<RunElement>();
         // Get all document in the RunList
-        List<String> documentList = runList.getAllDocumentNames();
+        List<String> documentList = runList.getAllDocuments();
         for (String name: documentList){
             RunElement[][] elements = runList.getElements(name);
             for(RunElement[] curTopic: elements) {

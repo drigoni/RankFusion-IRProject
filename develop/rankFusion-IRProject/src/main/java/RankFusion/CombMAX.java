@@ -21,7 +21,7 @@ public class CombMAX extends AbsRankFusion{
     public Run Fuse(RunList runList, AssessmentList assessmentList){
         List<RunElement> elementList = new ArrayList<RunElement>();
         // Get all document in the RunList
-        List<String> documentList = runList.getAllDocumentNames();
+        List<String> documentList = runList.getAllDocuments();
         for (String name: documentList){
             RunElement[][] elements = runList.getElements(name);
             for(RunElement[] curTopic: elements) {
@@ -37,8 +37,6 @@ public class CombMAX extends AbsRankFusion{
     }
 
     /**
-     * //TODO: Potrebbe capitare un errore se l'unico score migliore è minore di 0
-     * //TODO: In quanto potrebbe essere che
      * This methods returns the element with max score
      * @param elements Array of elements
      * @return  The element with max score

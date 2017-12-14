@@ -30,15 +30,14 @@ public class Loader extends  AbsLoader{
      * @return RunList of Run
      */
     public RunList StartLoad() throws FileNotFoundException {
-        RunList results = new RunList();
         if(this.path.isDirectory()) {
             List<File> files = this.OpenFolder(this.path);
-            results = this.LoadAll(files);
+            return this.LoadAll(files);
         } else{
-            results.add(this.Load(this.path));
+            List<Run> list = new ArrayList<Run>();
+            list.add(this.Load(this.path));
+            return new RunList(list);
         }
-
-        return  results;
     }
 
     /***
@@ -69,11 +68,11 @@ public class Loader extends  AbsLoader{
      * @return  RunList of run
      */
     private RunList LoadAll(List<File> list) throws FileNotFoundException {
-        RunList results = new RunList();
+        List<Run> listOfRun = new ArrayList<Run>();
         for(File file: list){
-            results.add(this.Load(file));
+            listOfRun.add(this.Load(file));
         }
-        return results;
+        return new RunList(listOfRun);
     }
 
     /***

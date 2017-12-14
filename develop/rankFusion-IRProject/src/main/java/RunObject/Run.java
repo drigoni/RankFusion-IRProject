@@ -1,9 +1,6 @@
 package RunObject;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Author: davide
@@ -73,9 +70,18 @@ public class Run implements Iterable<RunElement>{
      */
     public void sort(){
         Collections.sort(this.listOfRow);
-        for(int i = 0; i< listOfRow.size(); i++)
-            listOfRow.get(i).setRank(i+1);
-        //TODO: resetta rank al cambio del topic
+        String topic = "";
+        int rank = 0;
+        for(int i = 0; i < listOfRow.size(); i++) {
+            String currentTopic = listOfRow.get(i).getTopic();
+            if (i == 0)
+                topic = currentTopic;
+            if (!topic.equals(currentTopic))
+                rank = 0;
+
+            listOfRow.get(i).setRank(rank);
+            rank++;
+        }
     }
 
     /**
@@ -136,6 +142,7 @@ public class Run implements Iterable<RunElement>{
     public int getNTopics(){
         return this.nTopics;
     }
+
 
     /**
      * Allow access to the private field listOfRow

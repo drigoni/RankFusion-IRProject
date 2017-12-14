@@ -40,29 +40,34 @@ public class Main {
                 e.printStackTrace();
             }
 
+            Writer wr = new Writer(args[0]);
+
             // Check if all files needed are loaded
             if(runList != null && assessmentList != null) {
                 /*
                 System.out.println("Rank fusion with CombMAX");
                 CombMAX combMAX = new CombMAX();
                 Run resCombMAX = combMAX.Fuse(runList, assessmentList);
+                System.out.println("Save fusion as CombMAX.res");
+                wr.Save(resCombMAX);
 
                 System.out.println("Rank fusion with CombSUM");
                 CombSUM combSUM = new CombSUM();
                 Run resCombSUM = combSUM.Fuse(runList, assessmentList);
+                System.out.println("Save fusion as CombSUM.res");
+                wr.Save(resCombSUM);
 
                 System.out.println("Rank fusion with CombMNZ");
                 CombMNZ combMNZ = new CombMNZ();
                 Run resCombMNZ = combMNZ.Fuse(runList, assessmentList);
+                System.out.println("Save fusion as CombMNZ.res");
+                wr.Save(resCombMNZ);
 
                 System.out.println("Rank fusion with ProbFuse");
                 ProbFuse probFuse = new ProbFuse();
                 Run resProbFuse = probFuse.Fuse(runList, assessmentList);
-
-                Writer wr = new Writer(args[0]);
-                wr.Save(resCombMAX);
-                wr.Save(resCombSUM);
-                wr.Save(resCombMNZ);
+                System.out.println("Save fusion as ProbFuse.res");
+                wr.Save(resProbFuse);
                 */
             } else{
                 System.out.println("all files needed are not loaded");
