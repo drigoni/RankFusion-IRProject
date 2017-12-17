@@ -97,9 +97,9 @@ public class RunElement implements Comparable<RunElement>{
             return -1;
         }else {
             if (diff > 0)
-                return 1;
-            else if (diff < 0) {
                 return -1;
+            else if (diff < 0) {
+                return 1;
             } else {
                 return 0;
             }

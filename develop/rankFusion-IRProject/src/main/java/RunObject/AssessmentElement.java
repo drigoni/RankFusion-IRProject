@@ -40,7 +40,7 @@ public class AssessmentElement {
         this.topic = topic;
         this.query = query;
         this.document = document;
-        this.assessment = Boolean.parseBoolean(assessment);
+        this.assessment = assessment.equals("1");
     }
 
     /**
