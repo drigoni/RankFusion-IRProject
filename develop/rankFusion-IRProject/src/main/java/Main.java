@@ -10,6 +10,7 @@ import RunObject.Run;
 import RunObject.RunList;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * Author: davide
@@ -67,7 +68,11 @@ public class Main {
                 ProbFuse probFuse = new ProbFuse();
                 Run resProbFuse = probFuse.Fuse(runList, assessmentList);
                 System.out.println("Save fusion as ProbFuse.res");
-                wr.Save(resProbFuse);
+                try {
+                    wr.Save(resProbFuse, true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 */
             } else{
                 System.out.println("all files needed are not loaded");

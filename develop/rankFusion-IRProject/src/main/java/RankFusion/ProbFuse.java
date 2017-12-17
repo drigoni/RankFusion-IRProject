@@ -52,7 +52,9 @@ public class ProbFuse extends AbsRankFusion {
 
         @Override
         public int hashCode() {
-            return Objects.hash(topic, document);
+            int result = topic != null ? topic.hashCode() : 0;
+            result = 31 * result + (document != null ? document.hashCode() : 0);
+            return result;
         }
     }
 
@@ -66,7 +68,7 @@ public class ProbFuse extends AbsRankFusion {
         List<RunElement> elements = getResultElements(assessmentList.getTopics(), runList.getAllDocuments(),
                 probabilities);
 
-        return new Run("ProbFuse", elements);
+        return new Run("ProbFuse.res", elements, true);
     }
 
     /**
@@ -83,10 +85,11 @@ public class ProbFuse extends AbsRankFusion {
         Map<String, Integer> docsCount = new HashMap<String, Integer>();
         for (AssessmentElement element : assessmentList) {
             String topic = element.getTopic();
-            docsCount.put(topic, docsCount.getOrDefault(topic, 0) + 1);
+            docsCount.put(topic, (docsCount.containsKey(topic) ? docsCount.get(topic) : 0) + 1);
 
             if (element.getAssessment())
-                relevantDocsCount.put(topic, relevantDocsCount.getOrDefault(topic, 0) + 1);
+                relevantDocsCount.put(topic,
+                        (relevantDocsCount.containsKey(topic) ? relevantDocsCount.get(topic) : 0) + 1);
         }
 
         // calculating probabilities
@@ -119,11 +122,12 @@ public class ProbFuse extends AbsRankFusion {
 
                 for (Map<Key, Double> probs : probabilities) {
                     Key key = new Key(topic, document);
-                    score += probs.getOrDefault(key, 0d);
+                    score += probs.containsKey(key) ? probs.get(key) : 0d;
                 }
 
                 // assuming 1 query
-                elements.add(new RunElement(topic, "Q0", document, rank++, score, "ProbFuse"));
+                if (score > 0)
+                    elements.add(new RunElement(topic, "Q0", document, rank++, score, "ProbFuse"));
             }
         }
 
