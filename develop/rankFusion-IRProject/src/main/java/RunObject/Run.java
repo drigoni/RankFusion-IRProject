@@ -76,8 +76,10 @@ public class Run implements Iterable<RunElement>{
             String currentTopic = listOfRow.get(i).getTopic();
             if (i == 0)
                 topic = currentTopic;
-            if (!topic.equals(currentTopic))
+            if (!topic.equals(currentTopic)) {
                 rank = 0;
+                topic = currentTopic;
+            }
 
             listOfRow.get(i).setRank(rank);
             rank++;
