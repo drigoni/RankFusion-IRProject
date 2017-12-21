@@ -62,8 +62,13 @@ public class CombMAX extends AbsRankFusion{
                 maxIndex = i;
             }
         }
-        if(lastIndex != -1)
-            return elements[maxIndex];
+        if(lastIndex != -1) {
+            // Make a new RunElement copying some data from another one
+            RunElement newEl = elements[maxIndex].deepCopy();
+            newEl.setModel("CombMAX");
+
+            return newEl;
+        }
         else{
             return null;
         }

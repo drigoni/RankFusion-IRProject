@@ -1,6 +1,7 @@
 import InputOutput.Loader;
 import InputOutput.LoaderAssesment;
 import InputOutput.Writer;
+import Normalize.Standard;
 import RankFusion.CombMAX;
 import RankFusion.CombMNZ;
 import RankFusion.CombSUM;
@@ -43,26 +44,45 @@ public class Main {
 
             Writer wr = new Writer(args[0]);
 
+
+
             // Check if all files needed are loaded
             if(runList != null && assessmentList != null) {
-                /*
+                // Normalization
+                System.out.println("Standard Normalization");
+                Standard std = new Standard();
+                std.execute(runList);
+
+                // Make Rank Fusion
                 System.out.println("Rank fusion with CombMAX");
                 CombMAX combMAX = new CombMAX();
                 Run resCombMAX = combMAX.Fuse(runList, assessmentList);
                 System.out.println("Save fusion as CombMAX.res");
-                wr.Save(resCombMAX);
+                try {
+                    wr.Save(resCombMAX, true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
                 System.out.println("Rank fusion with CombSUM");
                 CombSUM combSUM = new CombSUM();
                 Run resCombSUM = combSUM.Fuse(runList, assessmentList);
                 System.out.println("Save fusion as CombSUM.res");
-                wr.Save(resCombSUM);
+                try {
+                    wr.Save(resCombSUM, true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
                 System.out.println("Rank fusion with CombMNZ");
                 CombMNZ combMNZ = new CombMNZ();
                 Run resCombMNZ = combMNZ.Fuse(runList, assessmentList);
                 System.out.println("Save fusion as CombMNZ.res");
-                wr.Save(resCombMNZ);
+                try {
+                    wr.Save(resCombMNZ, true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
                 System.out.println("Rank fusion with ProbFuse");
                 ProbFuse probFuse = new ProbFuse();
@@ -73,9 +93,9 @@ public class Main {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                */
+
             } else{
-                System.out.println("all files needed are not loaded");
+                System.out.println("All files needed are not loaded");
             }
 
 
