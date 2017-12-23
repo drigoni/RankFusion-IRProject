@@ -1,9 +1,11 @@
 package RunObject;
 
+import RankFusion.ProbFuse;
+
 import java.util.*;
 
 /**
- * Author: davide
+ * Author: Davide Rigoni,
  * Github Name: drigoni
  * Date: 06/12/17
  *
@@ -19,7 +21,7 @@ public class Run implements Iterable<RunElement>{
     /**
      * This field represents the list of element inside the run
      */
-    private List<RunElement> listOfRow;
+    private Map<Key, RunElement> listOfRow;
 
     /**
      * This field represents the number of topics
@@ -36,7 +38,7 @@ public class Run implements Iterable<RunElement>{
      * @param name  Name of the file
      * @param listOfRow List of RunElement
      */
-    public Run(String name,  List<RunElement> listOfRow){
+    public Run(String name,  Map<Key, RunElement> listOfRow){
         this.name = name;
         this.listOfRow = listOfRow;
         this.topics = this.getTopicsID();
@@ -49,18 +51,20 @@ public class Run implements Iterable<RunElement>{
      * @param listOfRow List of RunElement
      * @param sort True if the run should be sorted
      */
-    public Run(String name, List<RunElement> listOfRow, boolean sort){
-        this(name,listOfRow);
-        this.sort();
+    public Run(String name, Map<Key, RunElement> listOfRow, boolean sort){
+        this(name, listOfRow);
     }
 
     @Override
     public String toString(){
+        List<RunElement> list =
+                new ArrayList<RunElement>(this.listOfRow.values());
+        Collections.sort(list);
         String s = "";
-        for(int i = 0; i < listOfRow.size(); i++){
+        for(int i = 0; i < list.size(); i++){
             if(i > 0)
                 s+= "\r\n";
-            s+= listOfRow.get(i);
+            s+= list.get(i);
         }
         return s;
     }
@@ -68,12 +72,14 @@ public class Run implements Iterable<RunElement>{
     /**
      * This method sort the Run element by score and update the rank
      */
-    public void sort(){
-        Collections.sort(this.listOfRow);
+    public List<RunElement> sort(){
+        List<RunElement> list =
+                new ArrayList<RunElement>(this.listOfRow.values());
+        Collections.sort(list);
         String topic = "";
         int rank = 0;
-        for(int i = 0; i < listOfRow.size(); i++) {
-            String currentTopic = listOfRow.get(i).getTopic();
+        for(int i = 0; i < list.size(); i++) {
+            String currentTopic = list.get(i).getTopic();
             if (i == 0)
                 topic = currentTopic;
             if (!topic.equals(currentTopic)) {
@@ -81,9 +87,10 @@ public class Run implements Iterable<RunElement>{
                 topic = currentTopic;
             }
 
-            listOfRow.get(i).setRank(rank);
+            list.get(i).setRank(rank);
             rank++;
         }
+        return list;
     }
 
     /**
@@ -91,8 +98,9 @@ public class Run implements Iterable<RunElement>{
      * @return An iterator of RunElement
      */
     public Iterator<RunElement> iterator() {
-        return listOfRow.iterator();
+        return listOfRow.values().iterator();
     }
+
 
     /**
      * This methods returns the list of topic id inside the run
@@ -100,7 +108,7 @@ public class Run implements Iterable<RunElement>{
      */
     private List<String> getTopicsID(){
         List<String> list = new ArrayList<String>();
-        for(RunElement el: this.listOfRow){
+        for(RunElement el: this.listOfRow.values()){
             if(!list.contains(el.getTopic())){
                 list.add(el.getTopic());
             }
@@ -148,11 +156,11 @@ public class Run implements Iterable<RunElement>{
 
     /**
      * Allow access to the private field listOfRow
-     * @param index Index
+     * @param key key
      * @return  The RunElement
      */
-    public RunElement get(int index){
-        return this.listOfRow.get(index);
+    public RunElement get(Run.Key key){
+        return this.listOfRow.get(key);
     }
 
     /**
@@ -163,27 +171,52 @@ public class Run implements Iterable<RunElement>{
      * @return  The RunElement or null if it is not present
      */
     public RunElement get(String documentName, String topicID){
-        for(RunElement el: listOfRow){
-            if(el.getDocument().equals(documentName)
-                    && el.getTopic().equals(topicID))
-                return el;
-        }
-        return null;
+        return this.get(new Run.Key(topicID, documentName));
     }
+
+
 
     /**
-     * Allow access to the private field listOfRow given a document name
-     * @param documentName Document name
-     * @return  Elements for every topics or null if it is not present
+     * Wrapper around topic and document values used for multi-key map
      */
-    public RunElement[] get(String documentName){
-        int size = this.getNTopics();
-        RunElement[] values = new RunElement[size];
-        for(int i = 0; i < this.listOfRow.size(); i++){
-            if(listOfRow.get(i).getDocument().equals(documentName))
-                values[i] = listOfRow.get(i);
-        }
-        return values;
-    }
+    public static class Key {
+        /**
+         * The topic identifier
+         */
+        private String topic;
 
+        /**
+         * The document identifier
+         */
+        private String document;
+
+        /**
+         * Constructor
+         * @param topic The topic identifier
+         * @param document The document identifier
+         */
+        public Key(String topic, String document) {
+            this.topic = topic;
+            this.document = document;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o)
+                return true;
+            if (o == null || getClass() != o.getClass())
+                return false;
+
+            Run.Key key = (Run.Key) o;
+            return topic.equals(key.topic) &&
+                    document.equals(key.document);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = topic != null ? topic.hashCode() : 0;
+            result = 31 * result + (document != null ? document.hashCode() : 0);
+            return result;
+        }
+    }
 }

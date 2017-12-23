@@ -14,8 +14,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
- * Author: davide
- * Github Name: drigoni
+ * Author: Davide Rigoni, Alex Beccaro
+ * Github Name: drigoni, abeccaro
  * Date: 06/12/17
  *
  * Main of the program

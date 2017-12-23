@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Author: davide
+ * Author: Davide Rigoni
  * Github Name: drigoni
  * Date: 09/12/17
  *

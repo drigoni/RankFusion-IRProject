@@ -6,11 +6,13 @@ import RunObject.Run;
 import RunObject.RunList;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
- * Author: davide
+ * Author: Davide Rigoni
  * Github Name: drigoni
  * Date: 09/12/17
  *
@@ -19,7 +21,8 @@ import java.util.List;
 public class CombMNZ extends AbsRankFusion{
 
     public Run Fuse(RunList runList, AssessmentList assessmentList){
-        List<RunElement> elementList = new ArrayList<RunElement>();
+        Map<Run.Key, RunElement> elementList =
+                new HashMap<Run.Key, RunElement>();
         // Get all document in the RunList
         List<String> documentList = runList.getAllDocuments();
         for (String name: documentList){
@@ -28,7 +31,9 @@ public class CombMNZ extends AbsRankFusion{
                 RunElement max = SumMNZ(curTopic);
                 // Add element to the list in order to generate the fusion
                 if(max != null)
-                    elementList.add(max);
+                    elementList.put(
+                            new Run.Key(max.getTopic(), max.getDocument()),
+                            max);
             }
         }
 

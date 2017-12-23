@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Author: davide
+ * Author:  Davide Rigoni
  * Github Name: drigoni
  * Date: 06/12/17
  *

@@ -1,15 +1,17 @@
 package InputOutput;
 
 import RunObject.Run;
+import RunObject.RunElement;
 import RunObject.RunList;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 
 /**
- * Author: davide
+ * Author:  Davide Rigoni
  * Github Name: drigoni
  * Date: 06/12/17
  *
@@ -53,9 +55,10 @@ public class Writer {
         String fileName = path.toString() + "/" + run.getName();
         FileWriter f = new FileWriter(fileName);
         PrintWriter wr = new PrintWriter(f);
+        List<RunElement> runElements = run.sort();
         if(inTime) {
-            for(int i=0; i < run.getSize(); i++){
-                wr.println(run.get(i));
+            for(int i=0; i < runElements.size(); i++){
+                wr.println(runElements.get(i));
             }
         } else{
             wr.print(run);

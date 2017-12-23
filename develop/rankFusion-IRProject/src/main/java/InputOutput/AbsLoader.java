@@ -3,7 +3,7 @@ package InputOutput;
 import java.io.File;
 
 /**
- * Author: davide
+ * Author:  Davide Rigoni
  * Github Name: drigoni
  * Date: 13/12/17
  *

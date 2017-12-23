@@ -5,7 +5,7 @@ import RunObject.Run;
 import RunObject.RunList;
 
 /**
- * Author: davide
+ * Author:  Davide Rigoni
  * Github Name: drigoni
  * Date: 09/12/17
  *

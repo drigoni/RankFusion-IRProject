@@ -1,7 +1,5 @@
 package RankFusion;
-
 import RunObject.*;
-
 import java.util.*;
 
 
@@ -14,90 +12,53 @@ import java.util.*;
  */
 public class ProbFuse extends AbsRankFusion {
 
-    /**
-     * Wrapper around topic and document values used for multi-key map
-     */
-    static class Key {
-        /**
-         * The topic identifier
-         */
-        private String topic;
-
-        /**
-         * The document identifier
-         */
-        private String document;
-
-        /**
-         * Constructor
-         * @param topic The topic identifier
-         * @param document The document identifier
-         */
-        Key(String topic, String document) {
-            this.topic = topic;
-            this.document = document;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o)
-                return true;
-            if (o == null || getClass() != o.getClass())
-                return false;
-
-            Key key = (Key) o;
-            return topic.equals(key.topic) &&
-                    document.equals(key.document);
-        }
-
-        @Override
-        public int hashCode() {
-            int result = topic != null ? topic.hashCode() : 0;
-            result = 31 * result + (document != null ? document.hashCode() : 0);
-            return result;
-        }
-    }
-
-
     public Run Fuse(RunList runList, AssessmentList assessmentList) {
-        List<Map<Key, Double>> probabilities = new ArrayList<Map<Key, Double>>();
+        List<Map<Run.Key, Double>> probabilities =
+                new ArrayList<Map<Run.Key, Double>>();
 
         for (Run r : runList)
             probabilities.add(calculateRunProbabilities(r, assessmentList));
 
-        List<RunElement> elements = getResultElements(assessmentList.getTopics(), runList.getAllDocuments(),
+        Map<Run.Key, RunElement> elements = getResultElements(
+                assessmentList.getTopics(),
+                runList.getAllDocuments(),
                 probabilities);
 
         return new Run("ProbFuse.res", elements, true);
     }
 
     /**
-     * Calculates the probabilities P(d_k | m) where m is given run for each document d returned by query in topic k.
+     * Calculates the probabilities P(d_k | m) where m is given run for
+     * each document d returned by query in topic k.
      * This assumes that there is only one query!!
      * @param run The run obtained with a certain model
      * @return The probabilities
      */
-    private Map<Key, Double> calculateRunProbabilities(Run run, AssessmentList assessmentList) {
-        Map<Key, Double> probabilities = new HashMap<Key, Double>();
+    private Map<Run.Key, Double> calculateRunProbabilities
+    (Run run, AssessmentList assessmentList) {
+        Map<Run.Key, Double> probabilities = new HashMap<Run.Key, Double>();
 
         // getting number of relevant and total documents for each topic
         Map<String, Integer> relevantDocsCount = new HashMap<String, Integer>();
         Map<String, Integer> docsCount = new HashMap<String, Integer>();
         for (AssessmentElement element : assessmentList) {
             String topic = element.getTopic();
-            docsCount.put(topic, (docsCount.containsKey(topic) ? docsCount.get(topic) : 0) + 1);
+            docsCount.put(topic, (docsCount.containsKey(topic) ?
+                    docsCount.get(topic) : 0) + 1);
 
             if (element.getAssessment())
                 relevantDocsCount.put(topic,
-                        (relevantDocsCount.containsKey(topic) ? relevantDocsCount.get(topic) : 0) + 1);
+                        (relevantDocsCount.containsKey(topic)
+                                ? relevantDocsCount.get(topic) : 0) + 1);
         }
 
         // calculating probabilities
         for (RunElement element : run) {
             String topic = element.getTopic();
-            double probability = (double) relevantDocsCount.get(topic) / docsCount.get(topic);
+            double probability = (double) relevantDocsCount.get(topic)
+                    / docsCount.get(topic);
 
-            Key key = new Key(topic, element.getDocument());
+            Run.Key key = new Run.Key(topic, element.getDocument());
             probabilities.put(key, probability);
         }
 
@@ -105,29 +66,34 @@ public class ProbFuse extends AbsRankFusion {
     }
 
     /**
-     * Creates resulting elements that will form the fused run using probabilities previously calculated.
+     * Creates resulting elements that will form the fused run using
+     * probabilities previously calculated.
      * @param topics The list of topics
      * @param documents The list of all documents
      * @param probabilities The probabilities indexed by topic and document
      * @return The element that will form the fused run.
      */
-    private List<RunElement> getResultElements(String[] topics, List<String> documents,
-                                               List<Map<Key, Double>> probabilities) {
-        List<RunElement> elements = new ArrayList<RunElement>();
+    private Map<Run.Key, RunElement> getResultElements
+    (String[] topics, List<String> documents,
+     List<Map<Run.Key, Double>> probabilities) {
+        Map<Run.Key, RunElement> elements = new HashMap<Run.Key, RunElement>();
 
         int rank = 0;
         for (String topic : topics) {
             for (String document : documents) {
                 double score = 0;
 
-                for (Map<Key, Double> probs : probabilities) {
-                    Key key = new Key(topic, document);
+                for (Map<Run.Key, Double> probs : probabilities) {
+                    Run.Key key = new Run.Key(topic, document);
                     score += probs.containsKey(key) ? probs.get(key) : 0d;
                 }
 
                 // assuming 1 query
                 if (score > 0)
-                    elements.add(new RunElement(topic, "Q0", document, rank++, score, "ProbFuse"));
+                    elements.put(
+                            new Run.Key(topic, document),
+                            new RunElement(topic, "Q0", document, rank++, score,
+                                    "ProbFuse"));
             }
         }
 

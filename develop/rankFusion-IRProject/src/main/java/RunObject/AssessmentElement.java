@@ -1,7 +1,7 @@
 package RunObject;
 
 /**
- * Author: davide
+ * Author: Davide Rigoni
  * Github Name: drigoni
  * Date: 06/12/17
  *

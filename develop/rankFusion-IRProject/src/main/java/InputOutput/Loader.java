@@ -2,14 +2,13 @@ package InputOutput;
 
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.io.File;
-import java.util.Scanner;
+
 import RunObject.*;
 
 /**
- * Author: davide
+ * Author:  Davide Rigoni
  * Github Name: drigoni
  * Date: 06/12/17
  *
@@ -82,11 +81,12 @@ public class Loader extends  AbsLoader{
      */
     private Run Load(File file) throws FileNotFoundException {
         String name = file.getName();
-        List<RunElement> elements = new ArrayList<RunElement>();
+        Map<Run.Key, RunElement> elements = new HashMap<Run.Key, RunElement>();
         Scanner scan = new Scanner(file);
         while(scan.hasNextLine()) {
             String line = scan.nextLine();
-            elements.add(this.LoadRow(line));
+            RunElement el = this.LoadRow(line);
+            elements.put( new Run.Key(el.getTopic(), el.getDocument()), el);
         }
         scan.close();
         return new Run(name, elements);
