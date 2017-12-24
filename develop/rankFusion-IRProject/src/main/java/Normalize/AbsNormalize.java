@@ -18,14 +18,8 @@ public abstract class AbsNormalize implements INormalize{
      * @param run Run
      */
     protected void translateValue(Run run, double min){
-        if(min > 0){
-            for(RunElement el: run){
-                el.setScore(el.getScore() - min);
-            }
-        } else if(min < 0){
-            for(RunElement el: run){
-                el.setScore(el.getScore() - min); // like .. + Abs(min)
-            }
+        for(RunElement el: run){
+            el.setScore(el.getScore() - min);
         }
     }
 
