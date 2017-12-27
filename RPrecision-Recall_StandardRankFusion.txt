@@ -1,4 +1,4 @@
-prec =
+Rprec =
 
   50×3 table
 
