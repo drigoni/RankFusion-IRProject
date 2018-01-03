@@ -14,19 +14,26 @@ public class ProbFuse extends AbsRankFusion {
 
     private static final int SEGMENT_SIZE = 20;
 
+    private static final String QUERY = "Q0";
+    private static final String MODEL_NAME = "ProbFuse";
+
+
     public Run Fuse(RunList runList, AssessmentList assessmentList) {
         List<Map<Run.Key, Double>> probabilities =
                 new ArrayList<Map<Run.Key, Double>>();
 
+        // calculate probabilities from each model
         for (Run r : runList)
             probabilities.add(calculateRunProbabilities(r, assessmentList));
 
+        // sum documents probabilities of different models
         Map<Run.Key, RunElement> elements = getResultElements(
                 assessmentList.getTopics(),
                 runList.getAllDocuments(),
                 probabilities);
 
-        return new Run("ProbFuse.res", elements, true);
+        // creating and returning result run
+        return new Run(MODEL_NAME + ".res", elements, true);
     }
 
     /**
@@ -38,12 +45,11 @@ public class ProbFuse extends AbsRankFusion {
      */
     private Map<Run.Key, Double> calculateRunProbabilities
     (Run run, AssessmentList assessmentList) {
-        System.out.println("Calculating run " + run.getName());
-
         Map<Run.Key, Double> probabilities = new HashMap<Run.Key, Double>();
 
         Map<String, List<RunElement>> elementsByTopic = new HashMap<String, List<RunElement>>();
 
+        // mapping run elements by their topic
         for (RunElement e : run) {
             String topic = e.getTopic();
             if (elementsByTopic.containsKey(topic))
@@ -61,6 +67,7 @@ public class ProbFuse extends AbsRankFusion {
         for (String topic: elementsByTopic.keySet()) {
             List<RunElement> topicElements = elementsByTopic.get(topic);
 
+            // reset segment variables
             segmentElements.clear();
             relevant = 0;
             nonRelevant = 0;
@@ -98,8 +105,6 @@ public class ProbFuse extends AbsRankFusion {
                 addSegmentProbabilities(probabilities, segmentElements, probability);
             }
         }
-
-        System.out.println("Finished calculating run " + run.getName());
 
         return probabilities;
     }
@@ -139,26 +144,22 @@ public class ProbFuse extends AbsRankFusion {
      List<Map<Run.Key, Double>> probabilities) {
         Map<Run.Key, RunElement> elements = new HashMap<Run.Key, RunElement>();
 
-        int rank = 0;
-        for (String topic : topics) {
+        for (String topic : topics)
             for (String document : documents) {
-                //System.out.println("Topic: " + topic + " - document: " + document);
                 double score = 0;
+                Run.Key key = new Run.Key(topic, document);
 
-                for (Map<Run.Key, Double> probs : probabilities) {
-                    Run.Key key = new Run.Key(topic, document);
+                // add probabilities to score
+                for (Map<Run.Key, Double> probs : probabilities)
                     score += probs.containsKey(key) ? probs.get(key) : 0d;
-                    //System.out.println("Score updated to: " + score);
-                }
 
-                // assuming 1 query
+                // if score > 0 create and add new RunElement
+                // note that rank is not important as it will be defined when sorting Run
                 if (score > 0)
                     elements.put(
                             new Run.Key(topic, document),
-                            new RunElement(topic, "Q0", document, rank++, score,
-                                    "ProbFuse"));
+                            new RunElement(topic, QUERY, document, 0, score, MODEL_NAME));
             }
-        }
 
         return elements;
     }
