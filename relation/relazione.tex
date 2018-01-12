@@ -23,21 +23,21 @@ Then we have implemented an advanced rank fusion strategy called ProbFuse to per
 \textbf{I. INTRODUCTION} \\
 It has been shown in the past that rank fusion can greatly improve retrieval effectiveness over that of the individual results.
 This improvement can be achieved by evaluating the results obtained by implementation of different rank fusion algorithms and by the developing and comparing new rank fusion techniques.
-In this work ten runs are been generated through Terrier by choosing different IR models to catch all the important features from the given files collection. Then, through the implementation of the classical rank fusion algorithms (CombSUM, CombMAX, CombMNZ) we have evaluated the generated runs compared also with those obtained through Terrier previously. 
+In this work ten runs have been generated through Terrier by choosing different IR models to catch all the important features from the given files collection. Then, through the implementation of the classical rank fusion algorithms (CombSUM, CombMAX, CombMNZ) we have evaluated the generated runs and compared them also with those previously obtained through Terrier. 
 Finally, we have realized ProbFuse algorithm: an interesting method that could led us to the achievement of better IR results.
-ProbFuse’s idea consists in ranking documents based on their probability of relevance to the given topic in a reference k segment. This probability depends on which input system returned the document in its results and the position in which it is returned in the result set. 
+ProbFuse’s idea consists in ranking documents based on their probability of relevance to the given topic in a certain k segment. This probability depends on which input system returned the document in its results and the position in which it is returned in the result set. 
 The inputs to the fusion process are produced by different IR models running the same topics on the same document collection.\\
 
 \textbf{II.	COLLECTION FILE UNPACKING} \\
-At the beginning it has been difficult decompress the collection files. It has been discovered that Terrier’s 4.1 version was bugged and so we have had to use the 4.2 version to unpacked all the files.
-The zip file to be decompressed needed to one decompression program but it contained other zipped files that needed to another decompression program, they were compressed by using Unix. Some file were named with their names followed by an integer number and their extension names, such as if they were divided in small groups. They needed to be renamed, so it has been written a bash file to specify how to rename and decompress them automatically. \\
+At the beginning it has been difficult decompress the collection files. It has been discovered that Terrier’s 4.2 version was bugged and so we had to use the 4.1 version to unpacked all the files.
+The zip file to be decompressed needed one decompression program but it contained other zipped files that needed another decompression program, they were compressed by using Unix. Some file were named with their names followed by an integer number and their extension names, such as if they were divided in small groups. They needed to be renamed, so it has been written a bash file to specify how to rename and decompress them automatically. \\
 
 \textbf{III. INDEXING} \\
 It has been used Terrier to index Trec collection. 
-At the beginning, it was unknown what was the just format and the exact markup structure to adopt for the given collection through Terrier, so it has been complicated to understand how to set up the properties file and create the indexing with the appropriate lexical analysis, stop-word removal, stemmer and the other settings. The stop-list and the stemmer used for indexing are those base of Terrier used for English language, the stemmer is PorterStemmer. \\ \\ \\ \\
+At the beginning, it was unknown what was the correct format and the exact markup structure to adopt for the given collection for Terrier, so it has been complicated to understand how to set up the properties file and create the indexing with the appropriate lexical analysis, stop-word removal, stemmer and the other settings. The stop-list and the stemmer used for indexing are those ones of Terrier used for English language, the stemmer is PorterStemmer. \\ \\ \\ \\
 
-\textbf{IV. CHOICE OF IR MODELS FOR RUN BEGETTING} \\
-The followed models are been chosen though Terrier to generate ten runs to evaluate subsequently: 
+\textbf{IV. CHOICE OF IR MODELS FOR RUN GENERATION} \\
+The followed models have been chosen though Terrier to generate ten runs to evaluate subsequently: 
 \begin{enumerate}
 \item TFIDF
 \item BM25
@@ -50,19 +50,19 @@ The followed models are been chosen though Terrier to generate ten runs to evalu
 \item IFB2 (DFR)
 \item BB2 (DFR)
 \end{enumerate} 
-These are very different models based in sundry approaches, some of them have something in common, other use different functions if we compare them to some others, so they are different each other generally. In this way, the rank fusion should achieve better results, because if it takes values from all the individual models, it can capture collection qualities and strength elements given by these and so the fusion should report good results. \\
+These are very different models based in sundry approaches, some of them have something in common, other use different functions if we compare them to some others, so they are different each other generally. In this way, the rank fusion should achieve better results, because if it takes values from all the individual models, it can capture collection qualities and strength elements given by these and so the fusion should report better results. \\
 
 \textbf{V. NORMALIZATION} \\
 The normalization used in this work is been the Standard Normalization which calculates normalized scores by using the maximum and the minimum scores given in the result set. 
 The minimum score is subtracted to the unnormalized score of each run element and then this result is divided for the difference between the maximum score and the minimum score.
-After the score normalization, the followed combination functions for the scores combination are been implemented: CombMAX, CombSUM, CombMNZ, ProbFuse.
+After the score normalization, the followed combination functions for the scores combination have been implemented: CombMAX, CombSUM, CombMNZ, ProbFuse.
 They allow to carry out the rank fusion. \\
 
 \textbf{VI.	PROBE FUSE ALGORITHM} \\
 ProbFuse algorithm needs to build a set of probabilities for each input model. 
 The analysis of the performance of each individual models on training queries allow to calculate these probabilities. 
 In our case, we have only one query for the whole collection.
-To calculate these probabilities we need runs given by the individual models and we need to divide each topic of each run in k segments. For each segment we count relevant and not relevant documents and we calculate the probability that considers each relevant document d returned by query considering each topic. 
+To calculate these probabilities we need runs given by the individual models and we need to divide each topic of each run in k segments. For each segment we count relevant and not relevant documents and we calculate the probability considering each relevant document d returned by query considering each topic. 
 So, for each segment we want to calculate the probability that a relevant document returned in this segment is relevant to the given query. Each probability is obtained by the relationship between the number of relevant documents for a specific topic in a k segment and the number of all the documents inside the considered segment.
 Each element in the segment is identified by topic and document name, we assign its probability calculated in the segment and finally we have to sum the probability of the same documents in the different runs.
 Thus, the resulting elements will form the fused run by using the probabilities calculated. 
@@ -74,7 +74,7 @@ During the printing phase on file there was another problem: during this operati
 
 \textbf{VIII.	RUN ASSESSMENT} \\
 To assess all the strategies adopted in this work it has been used Matters library to calculate all the necessary assessment measures.
-The principal measures performed for the various comparisons are been: the calculation of precision in different levels of cut-off, RPrec, Average Precision, Cumulative Gain, Discounted Cumulative Gain and Mean Average Precision (MAP).
+The principal measures performed for the various comparisons have been: the calculation of precision in different levels of cut-off, RPrec, Average Precision, Cumulative Gain, Discounted Cumulative Gain and Mean Average Precision (MAP).
 Precision is been calculated by considering ten and thirty cut-off levels, it is very important to mark runs that have relevant documents in high positions. If we consider cut-off level equal to the recall base (the number of the relevant documents in the pool for a certain topic), we can use another interesting measure that is R-Prec.
 Instead, Average Precision is the most important measure used because it gives power to relevant document present in high position rank.
 DCG is used also to consider position of relevant documents, the discounted function decreases the document weight in the bottom ranking levels. It is calculated at different cut-off levels but it has not much meaning because we can’t know the maximum possible value that changes in the topics so it has been considered less than the other measures. Finally it has been calculated Mean Average Precision measure through Average Precision values calculated previously.
@@ -182,7 +182,7 @@ T   & ComMNZ   & ComMAX   & ComSUM   & ProbFuse \\ \hline
 
 We have implemented standard rank fusion strategies and ProbFuse algorithm, a data fusion algorithm that relies on the probability of relevance to calculate a ranking score for documents in a fused result set.
 These probabilities are calculated based on the position of relevant documents in result sets returned in response to the given collection’s query. For this collection, full relevance judgments were available, so all the document were just been judged. 
-By assessing the fused result set given by the different strategies adopted, we have discovered that standard rank fusion strategies are able to achieve results very similar to those obtained through fused result set derived from runs given by different individual models evaluated by Terrier. For some topics, the use of standard strategies has led to achieve results even better than these last. Instead, by comparing fused result set obtained through ProbFuse algorithm and those of standard strategies we have obtained better results for some topics that are been cited previously, for many others topics we have obtained similar results and for about ten topics the results achieved were worse than those derived from standard rank fusion strategies.
+By assessing the fused result set given by the different strategies adopted, we have discovered that standard rank fusion strategies are able to achieve results very similar to those obtained through fused result set derived from runs given by different individual models evaluated by Terrier. For some topics, the use of standard strategies has led to achieve results even better than these last. Instead, by comparing fused result set obtained through ProbFuse algorithm and those of standard strategies we have obtained better results for some topics that have been cited previously, for many others topics we have obtained similar results and for about ten topics the results achieved were worse than those derived from standard rank fusion strategies.
 
 	%bibliography
 	%\bibliographystyle{IEEEtran}
