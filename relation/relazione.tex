@@ -26,7 +26,7 @@ This improvement can be achieved by evaluating the results obtained by implement
 In this work ten runs have been generated through Terrier by choosing different IR models to catch all the important features from the given files collection. Then, through the implementation of the classical rank fusion algorithms (CombSUM, CombMAX, CombMNZ) we have evaluated the generated runs and compared them also with those previously obtained through Terrier. 
 Finally, we have realized ProbFuse algorithm: an interesting method that could led us to the achievement of better IR results.
 ProbFuse’s idea consists in ranking documents based on their probability of relevance to the given topic in a certain k segment. This probability depends on which input system returned the document in its results and the position in which it is returned in the result set. 
-The inputs to the fusion process are produced by different IR models running the same topics on the same document collection.\\
+The inputs to the fusion process are produced by different IR models that use the same topics on the document collection.\\
 
 \textbf{II.	COLLECTION FILE UNPACKING} \\
 At the beginning it has been difficult decompress the collection files. It has been discovered that Terrier’s 4.2 version was bugged and so we had to use the 4.1 version to unpacked all the files.
@@ -37,7 +37,7 @@ It has been used Terrier to index Trec collection.
 At the beginning, it was unknown what was the correct format and the exact markup structure to adopt for the given collection for Terrier, so it has been complicated to understand how to set up the properties file and create the indexing with the appropriate lexical analysis, stop-word removal, stemmer and the other settings. The stop-list and the stemmer used for indexing are those ones of Terrier used for English language, the stemmer is PorterStemmer. \\ \\ \\ \\
 
 \textbf{IV. CHOICE OF IR MODELS FOR RUN GENERATION} \\
-The followed models have been chosen though Terrier to generate ten runs to evaluate subsequently: 
+The following models have been chosen though Terrier to generate ten runs to evaluate subsequently: 
 \begin{enumerate}
 \item TFIDF
 \item BM25
@@ -60,7 +60,7 @@ They allow to carry out the rank fusion. \\
 
 \textbf{VI.	PROBE FUSE ALGORITHM} \\
 ProbFuse algorithm needs to build a set of probabilities for each input model. 
-The analysis of the performance of each individual models on training queries allow to calculate these probabilities. 
+The analysis of the performance of each individual model on training queries allow to calculate these probabilities. 
 In our case, we have only one query for the whole collection.
 To calculate these probabilities we need runs given by the individual models and we need to divide each topic of each run in k segments. For each segment we count relevant and not relevant documents and we calculate the probability considering each relevant document d returned by query considering each topic. 
 So, for each segment we want to calculate the probability that a relevant document returned in this segment is relevant to the given query. Each probability is obtained by the relationship between the number of relevant documents for a specific topic in a k segment and the number of all the documents inside the considered segment.
