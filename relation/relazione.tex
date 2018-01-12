@@ -53,7 +53,7 @@ The following models have been chosen though Terrier to generate ten runs to eva
 These are very different models based in sundry approaches, some of them have something in common, other use different functions if we compare them to some others, so they are different each other generally. In this way, the rank fusion should achieve better results, because if it takes values from all the individual models, it can capture collection qualities and strength elements given by these and so the fusion should report better results. \\
 
 \textbf{V. NORMALIZATION} \\
-The normalization used in this work is been the Standard Normalization which calculates normalized scores by using the maximum and the minimum scores given in the result set. 
+The normalization used in this work has been the Standard Normalization which calculates normalized scores by using the maximum and the minimum scores given in the result set. 
 The minimum score is subtracted to the unnormalized score of each run element and then this result is divided for the difference between the maximum score and the minimum score.
 After the score normalization, the followed combination functions for the scores combination have been implemented: CombMAX, CombSUM, CombMNZ, ProbFuse.
 They allow to carry out the rank fusion. \\
@@ -75,7 +75,7 @@ During the printing phase on file there was another problem: during this operati
 \textbf{VIII.	RUN ASSESSMENT} \\
 To assess all the strategies adopted in this work it has been used Matters library to calculate all the necessary assessment measures.
 The principal measures performed for the various comparisons have been: the calculation of precision in different levels of cut-off, RPrec, Average Precision, Cumulative Gain, Discounted Cumulative Gain and Mean Average Precision (MAP).
-Precision is been calculated by considering ten and thirty cut-off levels, it is very important to mark runs that have relevant documents in high positions. If we consider cut-off level equal to the recall base (the number of the relevant documents in the pool for a certain topic), we can use another interesting measure that is R-Prec.
+Precision has been calculated by considering ten and thirty cut-off levels, it is very important to mark runs that have relevant documents in high positions. If we consider cut-off level equal to the recall base (the number of the relevant documents in the pool for a certain topic), we can use another interesting measure that is R-Prec.
 Instead, Average Precision is the most important measure used because it gives power to relevant document present in high position rank.
 DCG is used also to consider position of relevant documents, the discounted function decreases the document weight in the bottom ranking levels. It is calculated at different cut-off levels but it has not much meaning because we can’t know the maximum possible value that changes in the topics so it has been considered less than the other measures. Finally it has been calculated Mean Average Precision measure through Average Precision values calculated previously.
 By comparing measures between runs evaluated by Terrier and those returned by standard rank fusion implemented algorithms, it has been noticed that on average the measures values of the different strategies are very similar. The comparison between MAP measures confirms this.
