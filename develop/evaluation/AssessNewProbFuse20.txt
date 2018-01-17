@@ -1,7 +1,7 @@
 
 p10 =
 
-  50×1 table
+  50Ã—1 table
 
            ProbFuse
            ________
@@ -61,7 +61,7 @@ p10 =
 
 p30 =
 
-  50×1 table
+  50Ã—1 table
 
            ProbFuse
            ________
@@ -121,7 +121,7 @@ p30 =
 
 Rprec1 =
 
-  50×1 table
+  50Ã—1 table
 
            ProbFuse
            ________
@@ -181,7 +181,7 @@ Rprec1 =
 
 ap1 =
 
-  50×1 table
+  50Ã—1 table
 
            ProbFuse 
            _________
@@ -237,8 +237,8 @@ ap1 =
     399      0.03016
     400      0.12869
 
->> mediaA
+>> MAP
 
-mediaA =
+MAP =
 
     0.0696
