@@ -12,7 +12,7 @@ import java.util.*;
  */
 public class ProbFuse extends AbsRankFusion {
 
-    private static final int SEGMENT_SIZE = 20;
+    private static final int SEGMENTS = 50;
 
     private static final String QUERY = "Q0";
     private static final String MODEL_NAME = "ProbFuse";
@@ -33,7 +33,7 @@ public class ProbFuse extends AbsRankFusion {
                 probabilities);
 
         // creating and returning result run
-        return new Run(MODEL_NAME + ".res", elements, true);
+        return new Run(MODEL_NAME + SEGMENTS + "s.res", elements, true);
     }
 
     /**
@@ -67,6 +67,8 @@ public class ProbFuse extends AbsRankFusion {
         for (String topic: elementsByTopic.keySet()) {
             List<RunElement> topicElements = elementsByTopic.get(topic);
 
+            long segmentSize = Math.round((double) topicElements.size() / SEGMENTS);
+
             // reset segment variables
             segmentElements.clear();
             relevant = 0;
@@ -87,7 +89,7 @@ public class ProbFuse extends AbsRankFusion {
                 segmentElements.add(element);
 
                 // if current segment is full calculate probabilities and clear segment data
-                if (segmentElements.size() == SEGMENT_SIZE) {
+                if (segmentElements.size() == segmentSize) {
                     double probability = ((double) relevant / (relevant + nonRelevant)) / segment;
                     addSegmentProbabilities(probabilities, segmentElements, probability);
 
