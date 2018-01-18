@@ -12,7 +12,7 @@ import java.util.*;
  */
 public class ProbFuse extends AbsRankFusion {
 
-    private static final int SEGMENTS = 50;
+    private static final int SEGMENTS = 70;
 
     private static final String QUERY = "Q0";
     private static final String MODEL_NAME = "ProbFuse";
