@@ -49,7 +49,7 @@ public class CombMAX extends AbsRankFusion{
     private RunElement Max(RunElement[] elements){
         int lastIndex = -1;
         int maxIndex = 0;
-        double maxScore = Double.MIN_VALUE;
+        double maxScore = Double.NEGATIVE_INFINITY;
 
         for(int i = 0 ; i < elements.length; i++){
             double v;

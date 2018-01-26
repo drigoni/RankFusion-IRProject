@@ -43,18 +43,17 @@ public class CombMIN extends AbsRankFusion{
     /**
      * This methods returns the element with min score
      * @param elements Array of elements
-     * @return  The element with max score
+     * @return  The element with min score
      */
     private RunElement Min(RunElement[] elements){
         int lastIndex = -1;
         int minIndex = 0;
-        double minScore = Double.MAX_VALUE;
+        double minScore = Double.POSITIVE_INFINITY;
 
         for(int i = 0 ; i < elements.length; i++){
             double v;
-            // Unretrieved documents are assigned a relevance score of 0
             if(elements[i] == null)
-                v = Double.MAX_VALUE;
+                v = Double.POSITIVE_INFINITY;
             else {
                 v = elements[i].getScore();
                 lastIndex = i;
