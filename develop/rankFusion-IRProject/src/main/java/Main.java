@@ -102,12 +102,56 @@ public class Main {
                     e.printStackTrace();
                 }
 
-                System.out.println("Rank fusion with ProbFuse");
-                ProbFuse probFuse = new ProbFuse();
-                Run resProbFuse = probFuse.Fuse(runList, assessmentList);
-                System.out.println("Save fusion as ProbFuse.res");
+                //--------------------------------------------------------------
+                //------------------------- ProbFuse ---------------------------
+                //--------------------------------------------------------------
+
+                System.out.println("Rank fusion with ProbFuse20");
+                ProbFuse probFuse20 = new ProbFuse(20);
+                Run resProbFuse20 = probFuse20.Fuse(runList, assessmentList);
+                System.out.println("Save fusion as ProbFuse20.res");
                 try {
-                    wr.Save(resProbFuse, true);
+                    wr.Save(resProbFuse20, true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                System.out.println("Rank fusion with ProbFuse50");
+                ProbFuse probFuse50 = new ProbFuse(50);
+                Run resProbFuse50 = probFuse50.Fuse(runList, assessmentList);
+                System.out.println("Save fusion as ProbFuse50.res");
+                try {
+                    wr.Save(resProbFuse50, true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                System.out.println("Rank fusion with ProbFuse70");
+                ProbFuse probFuse70 = new ProbFuse(70);
+                Run resProbFuse70 = probFuse70.Fuse(runList, assessmentList);
+                System.out.println("Save fusion as ProbFuse70.res");
+                try {
+                    wr.Save(resProbFuse70, true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                System.out.println("Rank fusion with ProbFuse90");
+                ProbFuse probFuse90 = new ProbFuse(90);
+                Run resProbFuse90 = probFuse90.Fuse(runList, assessmentList);
+                System.out.println("Save fusion as ProbFuse90.res");
+                try {
+                    wr.Save(resProbFuse90, true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                System.out.println("Rank fusion with ProbFuse110");
+                ProbFuse probFuse110 = new ProbFuse(110);
+                Run resProbFuse110 = probFuse110.Fuse(runList, assessmentList);
+                System.out.println("Save fusion as ProbFuse110.res");
+                try {
+                    wr.Save(resProbFuse110, true);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

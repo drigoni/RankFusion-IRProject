@@ -12,11 +12,16 @@ import java.util.*;
  */
 public class ProbFuse extends AbsRankFusion {
 
-    private static final int SEGMENTS = 110;
+    private int segments = 110;
 
     private static final String QUERY = "Q0";
     private static final String MODEL_NAME = "ProbFuse";
 
+    public ProbFuse(int segmentNumber){
+        this.segments = segmentNumber;
+    }
+
+    public  ProbFuse(){}
 
     public Run Fuse(RunList runList, AssessmentList assessmentList) {
         List<Map<Run.Key, Double>> probabilities =
@@ -33,7 +38,7 @@ public class ProbFuse extends AbsRankFusion {
                 probabilities);
 
         // creating and returning result run
-        return new Run(MODEL_NAME + SEGMENTS + "s.res", elements, true);
+        return new Run(MODEL_NAME + segments + "s.res", elements, true);
     }
 
     /**
@@ -67,7 +72,7 @@ public class ProbFuse extends AbsRankFusion {
         for (String topic: elementsByTopic.keySet()) {
             List<RunElement> topicElements = elementsByTopic.get(topic);
 
-            long segmentSize = Math.round((double) topicElements.size() / SEGMENTS);
+            long segmentSize = Math.round((double) topicElements.size() / segments);
 
             // reset segment variables
             segmentElements.clear();
@@ -160,7 +165,7 @@ public class ProbFuse extends AbsRankFusion {
                 if (score > 0)
                     elements.put(
                             new Run.Key(topic, document),
-                            new RunElement(topic, QUERY, document, 0, score, MODEL_NAME + SEGMENTS));
+                            new RunElement(topic, QUERY, document, 0, score, MODEL_NAME + segments));
             }
 
         return elements;
