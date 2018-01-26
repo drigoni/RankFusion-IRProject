@@ -2,10 +2,7 @@ import InputOutput.Loader;
 import InputOutput.LoaderAssesment;
 import InputOutput.Writer;
 import Normalize.Standard;
-import RankFusion.CombMAX;
-import RankFusion.CombMNZ;
-import RankFusion.CombSUM;
-import RankFusion.ProbFuse;
+import RankFusion.*;
 import RunObject.AssessmentList;
 import RunObject.Run;
 import RunObject.RunList;
@@ -74,12 +71,33 @@ public class Main {
                     e.printStackTrace();
                 }
 
+
+                System.out.println("Rank fusion with CombMIN");
+                CombMIN combMIN = new CombMIN();
+                Run resCombMIN = combMIN.Fuse(runList, assessmentList);
+                System.out.println("Save fusion as CombMIN.res");
+                try {
+                    wr.Save(resCombMIN, true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 System.out.println("Rank fusion with CombMNZ");
                 CombMNZ combMNZ = new CombMNZ();
                 Run resCombMNZ = combMNZ.Fuse(runList, assessmentList);
                 System.out.println("Save fusion as CombMNZ.res");
                 try {
                     wr.Save(resCombMNZ, true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                System.out.println("Rank fusion with CombANZ");
+                CombANZ combANZ = new CombANZ();
+                Run resCombANZ = combANZ.Fuse(runList, assessmentList);
+                System.out.println("Save fusion as CombANZ.res");
+                try {
+                    wr.Save(resCombANZ, true);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
