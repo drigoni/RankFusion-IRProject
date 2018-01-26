@@ -12,7 +12,7 @@ import java.util.*;
  */
 public class ProbFuse extends AbsRankFusion {
 
-    private static final int SEGMENTS = 70;
+    private static final int SEGMENTS = 110;
 
     private static final String QUERY = "Q0";
     private static final String MODEL_NAME = "ProbFuse";
@@ -160,7 +160,7 @@ public class ProbFuse extends AbsRankFusion {
                 if (score > 0)
                     elements.put(
                             new Run.Key(topic, document),
-                            new RunElement(topic, QUERY, document, 0, score, MODEL_NAME));
+                            new RunElement(topic, QUERY, document, 0, score, MODEL_NAME + SEGMENTS));
             }
 
         return elements;
