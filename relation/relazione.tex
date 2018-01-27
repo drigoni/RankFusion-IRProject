@@ -3,7 +3,7 @@
 \usepackage{amsmath}
 \usepackage[cmintegrals]{newtxmath}
 \usepackage{bm} % optional
-%\usepackage{wrapfig}
+\usepackage{wrapfig}
 \usepackage{graphicx} %package to manage images
 \usepackage[utf8]{inputenc}
 \usepackage{enumerate}
@@ -18,16 +18,16 @@
 	%\input{chapters/conclusion}
 	\textbf {Abstract— Recently researches have focused on the idea that performance and the effectiveness of individual IR models can be improved by combining the outputs of some individual models into a single result set. Data fusion is the combination of the results of independent searches on a document collection into one single output result set. In fact, ranking quality can be achieved by adopting different strategies and so different retrieval models.
 In this regard, we have implemented some rank fusion base strategies to perform retrieval experiments by generating runs and by comparing their individual results with results obtained by ten runs of different systems through Terrier.
-Then we have implemented an advanced rank fusion strategy called ProbFuse to perform another results comparison and to look for eventual improvements compared to the popular fusion algorithms.} \\
+Afterwards, we have implemented an advanced rank fusion strategy called ProbFuse to perform another results comparison and to look for eventual improvements compared to the popular fusion algorithms. We have reported also a ProbFuse variant after the IIX section namely ProbFuse Variant, whose explanations can be found in the VII section namely Implementation Issues.} \\
 
 %introduction
 \textbf{I. INTRODUCTION} \\
 It has been shown in the past that rank fusion can greatly improve retrieval effectiveness over that of the individual results.
 This improvement can be achieved by evaluating the results obtained by implementation of different rank fusion algorithms and by the developing and comparing new rank fusion techniques.
-In this work ten runs have been generated through Terrier by choosing different IR models to catch all the important features from the given files collection. Then, through the implementation of the classical rank fusion algorithms (CombSUM, CombMAX, CombMNZ) we have evaluated the generated runs and compared them also with those previously obtained through Terrier. 
-Finally, we have realized ProbFuse algorithm: an interesting method that could led us to the achievement of better IR results.
+In this work ten runs have been generated through Terrier by choosing different IR models to catch all the important features from the given files collection. Then, we have implemented the following classical rank fusion algorithms: CombSUM, CombMAX, CombMNZ, CombANZ and CombMIN. Through these ones we have assessed the generated runs and compared them with those ones previously obtained through Terrier. 
+Finally, we have realized the ProbFuse algorithm described in the reference paper: an interesting method that could led us to the achievement of better IR results.
 ProbFuse’s idea consists in ranking documents based on their probability of relevance to the given topic in a certain k segment. This probability depends on which input system returned the document in its results and the position in which it is returned in the result set. 
-The inputs to the fusion process are produced by different IR models that use the same topics on the document collection.\\
+The inputs to the fusion process are produced by different IR models that use the same topics on the document collection. At the beginning of this implementation we had realized a similar but different algorithm by considering the different lengths of the various runs, then we have corrected our initial hypotesis and followed the ProbFuse paper indications. We have reported also this one in the last section.\\
 
 \textbf{II.	COLLECTION FILE UNPACKING} \\
 At the beginning it has been difficult decompress the collection files. It has been discovered that Terrier’s 4.2 version was bugged and so we had to use the 4.1 version to unpacked all the files.
@@ -56,40 +56,40 @@ These are very different models based in sundry approaches, some of them have so
 \textbf{V. NORMALIZATION} \\
 The normalization used in this work has been the Standard Normalization which calculates normalized scores by using the maximum and the minimum scores given in the result set. 
 The minimum score is subtracted to the unnormalized score of each run element and then this result is divided for the difference between the maximum score and the minimum score.
-After the score normalization, the followed combination functions for the scores combination have been implemented: CombMAX, CombSUM, CombMNZ, ProbFuse.
+After the score normalization, the followed combination functions for the scores combination have been implemented: CombMAX, CombSUM, CombMNZ, CombMIN, CombANZ.
 They allow to carry out the rank fusion. \\
 
 \textbf{VI.	PROBE FUSE ALGORITHM} \\
 ProbFuse algorithm needs to build a set of probabilities for each input model. 
 The analysis of the performance of each individual model on training queries allow to calculate these probabilities. 
 To calculate these probabilities we need runs given by the individual models and to divide each topic of each run in k segments. For each segment we count relevant and not relevant documents and we calculate the probability considering each relevant document d returned by query considering each topic. 
-So, for each segment we want to calculate the probability that a relevant document returned in this segment is relevant according to the given query. Each probability is obtained by the relationship between the number of documents in segment k that are judged to be relevant to query q and the number of documents in segment k that are judged to be non relevant to the query. This result is finally divided for queries'number.
+So, for each segment we want to calculate the probability that a relevant document returned in this segment is relevant according to the given query. Each probability is obtained by the relationship between the number of documents in segment k that are judged to be relevant to query q and the number of documents in k segment that are judged to be non relevant to the query. This result is finally divided for queries'number.
 Each element in the segment is identified by topic and document name, we assign its probability calculated in the segment and finally we sum the probability of the same documents in the different runs.
 Thus, the resulting elements will form the fused run by using the probabilities calculated. 
-We have considered before twenty segments and subsequently fifty segments, because these ones have produced more satisfying results in ProbFuse paper and we wanted to test this. In run assessment phase we have discovered that we can obtain better results by using fifty segments than twenty segments. We have also implemented another similar approach to ProbFuse. We'll discuss about it in another section called "ProbFuse variant". \\
+We have considered before twenty segments and subsequently fifty segments, because these ones have produced more satisfying results in ProbFuse paper and we wanted to test with these ones. Subsequently we have tried Probfuse with other k values, in particular: seventy, ninety and hundred and ten segments, because by increasing the number of segments we obtained results improvements. In fact, in assessment phase we have discovered that we can obtain better results by using one hundred and ten segments. We have also implemented another similar approach to ProbFuse. We'll discuss about it in the last section called "ProbFuse variant". \\
 
 \textbf{VII. IMPLEMENTATION ISSUES} \\
 At first, it occurred a lot of time to execute main, the reading phase was very slow; the slowness was due to the structure used for Standard Rank Fusion functions. This problem has been solved by changing the structure from List to HashMap. 
 In these functions the research by score of run elements needed to iterate all run elements list, so complexity was O(n). Instead, by introducing HashMap structure the access for example to the element with maximum score value can occur directly. In this way the complexity is reduced to O(1) and main program can be executed in few minutes. 
 During the printing phase on file there was another problem: during this operation, after the execution of for cycle that iterates inside the run, it was created a single string. It took run’s rows and created a single string that was passed to an object which wrote a single string on file, but the string object was immutable and so every time it was created a new object copied by precedent string that added the new row. This caused copy of every run rows. This has been solved by using an object able to write on file through enqueuing elements inside a buffer, so that an element can be enqueued after the previous, the copy is avoided and the problem disappears.
-Furthermore, when we have started to implement ProbFuse algorithm we thought we had to consider run's subparts composed by k documents instead to divide each run in k segments, because the topics have different lengths in the collection. We thought that the difference of lengths could be a problem in the calculation of the probabilities, but finally we have followed the correct instructions of ProbFuse paper for its implementation and we have reported also this our ProbFuse variant. 
+Furthermore, when we have started to implement ProbFuse algorithm we thought we had to consider run's subparts composed by k documents instead to divide each run in k segments, because the topics have different lengths in the given collection. We thought that the difference of lengths could be a problem in the calculation of the probabilities required by ProbFuse algorithm, but finally we have followed the correct instructions of ProbFuse paper for its implementation and we have reported also this our ProbFuse variant. 
  \\
 
 \textbf{VIII.	RUN ASSESSMENT} \\
 We have used Matters library to assess all the different strategies adopted in this work and so to calculate all the necessary assessment measures and generate some plots.
-The principal measures performed for the various comparisons have been: the calculation of precision in different levels of cut-off, RPrec, Average Precision and Mean Average Precision (MAP).
-Precision has been calculated by considering ten and thirty cut-off levels because for many research tasks is important to consider results ranking in a certain range, and so to mark runs that have relevant documents in high positions. At this purpose, we have considered ten and thirty cut-off levels according to the tasks' needs. We have calculated also precision with cut-off level equal to the recall base (the number of the relevant documents in the pool for a certain topic), that is one of the most important measures used for IRs assessment.
-Instead, Average Precision is another important measure used that gives more power to relevant documents which have high rank.
+The principal measures performed for the various comparisons have been: the calculation of precision in different cut-off levels, RPrec, Average Precision and Mean Average Precision (MAP).
+Precision has been calculated by considering ten and thirty cut-off levels because for many research tasks is important to consider results ranking in a certain range, and so to mark runs that have relevant documents in high positions. At this purpose, we have considered ten and thirty cut-off levels according to the tasks' needs. We have calculated also precision with cut-off level equal to the recall base (the number of the relevant documents in the pool for a certain topic), that currently is one of the most important measures used for IRs assessment.
+Instead, Average Precision is another important measure presently used that gives more power to relevant documents which correspond to high rank.
 Finally it has been calculated Mean Average Precision through Average Precision values calculated previously.
 By comparing measures between runs evaluated by Terrier and those returned by standard rank fusion implemented algorithms, it has been noticed that on average the measures values of the different strategies are very similar. The comparison between MAP measures, we have reported, can confirm this.
 
 \begin{table}[h!]
 \centering
-\caption{MAP measures}
-\begin{tabular}{|l|l|l|}
+\caption{MAP values}
+\begin{tabular}{|l|l|l|l|l|}
 \hline
-ComMNZ & ComMAX & ComSUM \\ \hline
-0.1871 & 0.1831 & 0.1874 \\ \hline
+ComMNZ & ComMAX & ComSUM & CombANZ & CombMIN \\ \hline
+0.1871 & 0.1831 & 0.1874 & 0.1833 & 0.1301 \\ \hline
 \end{tabular}
 \end{table}
 
@@ -113,75 +113,67 @@ InL2   & In\_expC2 & LGD    & PL2        \\ \hline
 \end{tabular}
 \end{table}
 
-\begin{wrapfigure}
-\centering
-\includegraphics[scale=0.34]{2comparison}
-%\caption{AP for three IR models and Standard Rank Fusion strategies}
-\end{wrapfigure}
 
-Higher values can be obtained through rank fusion standard methods for some topics, but there are also some lower values for other topics compared to runs generated by Terrier. This difference is very small so it can be considered negligible. We have reported some examples where results obtained through standard stategies are better than runs evaluated by Terrier. \\
+Higher values can be obtained through rank fusion standard methods for some topics, but there are also some lower values for other topics compared to runs generated by Terrier. This difference is very small so it can be considered negligible. We have reported Average Precision plot considering the three best standard rank fusion strategies compared with the best three runs evaluated by Terrier derived from three IR models previously choosen.
+\begin{figure}
+\includegraphics[scale=0.32]{plot1}
+\caption{Average Precision for the three best standard Rank Fusion strategies VS the best three IR models in different topics}
+\label{Average Precision for the three best standard Rank Fusion strategies VS the best three IR models in different topics}
+\end{figure}
+
+By calculating the assessment measures of rank fusion obtained with ProbFuse we have obtained the best results by considering one hundred and ten segments. \\
+The increasing of the number of segments is proportional to the improvement of assessment measures results. This can be noticed by looking the following MAP measures for different ProbFuse k segments reported. 
+
 \begin{table}[h!]
 \centering
-\caption{comparison between RPrec values}
-\begin{tabular}{|l|l|l|l|l|l|l|}
+\caption{ProbFuse MAP values}
+\begin{tabular}{|l|l|l|l|l|}
 \hline
-T   & ComMNZ  & ComMAX  & ComSUM  & PL2  & LGD \\ \hline
-351 & 0.41667 & 0.41667 & 0.41667 & 0.375   & 0.45833 \\ \hline
-353 & 0.46721 & 0.31148 & 0.46721 & 0.30328 & 0.45082 \\ \hline
-396 & 0.33898 & 0.33898 & 0.33898 & 0.27119 & 0.33898 \\ \hline 
+k=110 & k=90 & k=70 & k=50 & k=20\\ \hline
+ 0.1585 & 0.1475 & 0.1260 & 0.1106  & 0.0696\\ \hline
 \end{tabular}
 \end{table}
 
-\begin{table}[h!]
-\centering
-\caption{comparison between Average Precision values}
-\begin{tabular}{|l|l|l|l|l|l|l|}
-\hline
-T   & ComMNZ  & ComMAX  & ComSUM  & PL2  & LGD  \\ \hline
-351 & 0.42182 & 0.41482 & 0.42236 & 0.36367 & 0.45134 \\ \hline
-353 & 0.2235  & 0.16493 & 0.22377 & 0.16542 & 0.23566 \\ \hline
-396 & 0.29961 & 0.3315  & 0.29961 & 0.27036 & 0.33576 \\ \hline
-\end{tabular}
-\end{table} 
+Furthermore, we have noticed that all the assessment values obtained through the different measures aren’t very similar with those ones of the standard rank fusion strategies. \\
+In the better ProbFuse obtained (considering one hundred and ten segments) we have observed better results for topics from 354 to 356, from 362 to 365, from 368 to 371 and for 380. This can be seen by observing the plot in the Fig.2. 
 
-By calculating the assessment measures of rank fusion obtained with ProbFuse it can be noticed that all the values aren’t very similar. For about ten topic, the results achieved are worse than standard rank fusion algorithms, but for the remaining topics, on the average, the values are similar. For some topics we can achieve even better results than standard rank fusion strategies.
-In particular, for the followed topics we have noticed improvements in ProbFuse assessment results: in 355 and 359 topics (for precision measure at thirty cut-off level), in 394 topic (for Rprec measure), in 399 topic (for precision measure at ten cut-off level), in 363, 367, 369, 370, 374, 376, 378, 379, 398, 380 topics for all the assessment measures. We have reported small examples where ProbFuse results are better than those obtained through standard strategies. \\
+\begin{figure}
+\includegraphics[scale=0.32]{plot2}
+\caption{Average Precision for Standard Rank Fusion strategies VS ProbFuse in different topics}
+\label{Average Precision for Standard Rank Fusion strategies VS ProbFuse in different topics}
+\end{figure}
 
-\begin{wrapfigure}
-\centering
-\includegraphics[scale=0.31]{1comparison}
-%\caption{AP for Standard Rank Fusion strategies and ProbFuse}
-\end{wrapfigure}
+We have also reported small examples where ProbFuse results are better than those obtained through standard strategies for different assessment measures in the following tables. \\
 
 
 \begin{table}[h!]
 \centering
-\caption{comparison between Average Precision values}
+\caption{comparison for Average Precision values}
 \begin{tabular}{|l|l|l|l|l|}
 \hline
 T   & ComMNZ    & ComMAX   & ComSUM    & ProbFuse \\ \hline
-355 & 0.086124  & 0.10336  & 0.086233  & 0.13838 \\ \hline
-363 & 0.047316  & 0.039032 & 0.047187  & 0.20361  \\ \hline
-380 & 0.17362   & 0.10718  & 0.17408   & 0.2014 \\ \hline
+355 & 0.086124  & 0.10336  & 0.086233  & 0.227280 \\ \hline
+363 & 0.047316  & 0.039032 & 0.047187  & 0.258369  \\ \hline
+380 & 0.17362   & 0.10718  & 0.17408   & 0.185909  \\ \hline
 \end{tabular}
 \end{table}
 
 \begin{table}[h!]
 \centering
-\caption{comparison between Rprec values}
+\caption{comparison for Rprec values}
 \begin{tabular}{|l|l|l|l|l|}
 \hline
 T   & ComMNZ   & ComMAX  & ComSUM   & ProbFuse \\ \hline
-363 & 0.125    & 0.0625  & 0.125    & 0.1875     \\ \hline
-380 & 0.14286  & 0.14286 & 0.14286  & 0.14286  \\ \hline
-394 & 0.058824 & 0       & 0.058824 & 0.11765  \\  \hline
+363 & 0.125    & 0.0625  & 0.125    & 0.25     \\ \hline
+387 & 0.1176  & 0.1412 & 0.1176  & 0.1529  \\ \hline
+394 & 0.058824 & 0       & 0.058824 & 0.1176  \\  \hline
 \end{tabular} 
 \end{table}
 
 
 \begin{table}[h!]
 \centering
-\caption{comparison between precision values at ten cut-off level}
+\caption{comparison for precision values at ten cut-off level}
 \begin{tabular}{|l|l|l|l|l|}
 \hline
 T   & ComMNZ & ComMAX & ComSUM & ProbFuse \\ \hline
@@ -193,16 +185,15 @@ T   & ComMNZ & ComMAX & ComSUM & ProbFuse \\ \hline
 
 \begin{table}[h!]
 \centering
-\caption{comparison between precision values at thirty cut-off level}
+\caption{comparison for precision values at thirty cut-off level}
 \begin{tabular}{|l|l|l|l|l|}
 \hline
 T   & ComMNZ   & ComMAX   & ComSUM   & ProbFuse \\ \hline
-359 & 0.033333 & 0.033333 & 0.033333 & 0.133333  \\ \hline
-370 & 0.1      & 0.13333  & 0.1      & 0.3  \\ \hline
-379 & 0.033333 & 0.033333 & 0.033333 & 0.06667     \\ \hline
+359 & 0.033333 & 0.033333 & 0.033333 & 0.2000  \\ \hline
+370 & 0.1      & 0.13333  & 0.1      & 0.3333  \\ \hline
+379 & 0.033333 & 0.033333 & 0.033333 & 0.1333     \\ \hline
 \end{tabular}
 \end{table}
-
 
 \textbf{IIX. CONCLUSION}
 
@@ -212,7 +203,23 @@ By assessing the fused result set given by the different strategies adopted, we 
 
 \textbf{IX.	PROBFUSE VARIATION}
 
-In this other ProbFuse implemention we have considered run's subparts of each individual model containing k documents instead to divide runs in k segments. We have considered different sizes for these subparts, in particular we have tested them considering fifteen, twenty, thirty and fifty documents. In the assessment phase we have obtained the best results with subparts of fifteen documents. In general, results obtained by considering all the assessment measures have been lower than original ProbFuse algorithm, but for some specific topics the output results have been even better than those obtained through standard rank fusion algorithms implemented.  \\
+In this other ProbFuse implemention we have considered run's subparts of each individual model containing k documents instead to divide runs in k segments. We have considered different sizes for these subparts, in particular we have tested them considering fifteen, twenty, thirty and fifty documents. In the assessment phase we have obtained the best results with subparts of fifteen documents. In general, results obtained by considering all the assessment measures have been lower than original ProbFuse algorithm, but for a few specific topics the output results have been even better than those obtained through standard rank fusion algorithms implemented. 
+
+\begin{table}[h!]
+\centering
+\caption{ProbFuse variant MAP values}
+\begin{tabular}{|l|l|l|l|}
+\hline
+k=15 & k=20 & k=30 & k=50 \\ \hline
+0.1083 & 0.0951 & 0.0842 & 0.0689  \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{figure}
+\includegraphics[scale=0.33]{plot3}
+\caption{Average Precision for this ProbFuse variant VS the original ProbFuse (with k=110 segments) in different topics}
+\label{Average Precision for this ProbFuse variant VS the original ProbFuse (with k=110 segments) in different topics}
+\end{figure}
 	%bibliography
 	%\bibliographystyle{IEEEtran}
 	%\bibliography{chapters/bibliography}
