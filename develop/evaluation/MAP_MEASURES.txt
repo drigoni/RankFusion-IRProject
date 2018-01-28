@@ -7,18 +7,18 @@ MAP=
 	
 MAP=
 	
-	 CombANZ     CombMIN   CombMNZ   CombMAZ    CombSUM
-       0.1833    0.1301    0.1871     0.1831    0.1874
+    CombANZ    CombMIN   CombMNZ   CombMAZ    CombSUM
+      0.1833    0.1301    0.1871     0.1831    0.1874
 	
 
 	
 MAP=
 
-    {'matters_BB2c10'}    {'matters_BM25b075'}    {'matters_DFR_BM2…'}    {'DLH13'}    {'matters_IFB2c10'}  {'matters_InL2c10'}    {'matters_In_expC…'}    
-       0.1882                   0.1828                    0.1835               0.1830        0.1881                 0.1854                  0.1826             
+{'matters_BB2c10'}   {'matters_BM25b075'  {'matters_DFR_BM2…'} {'DLH13'}  {'matters_IFB2c10'}  {'matters_InL2c10'}   
+       0.1882            0.1828               0.1835            0.1830        0.1881                 0.1854                             
     
-    {'matters_LGDc10'} {'matters_PL2c10'}    {'TF_IDF'}  
-       0.1882              0.1683           0.1821
+   {'matters_In_expC…'} {'matters_LGDc10'} {'matters_PL2c10'}  {'TF_IDF'}  
+        0.1826               0.1882              0.1683          0.1821
 	
 	
 	
