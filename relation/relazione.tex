@@ -124,6 +124,12 @@ Higher values can be obtained through rank fusion standard methods for some topi
 By calculating the assessment measures of rank fusion obtained with ProbFuse we have obtained the best results by considering one hundred and ten segments. \\
 The increasing of the number of segments is proportional to the improvement of assessment measures results. This can be noticed by looking the following MAP measures for different ProbFuse k segments reported. 
 
+\begin{figure}
+\includegraphics[scale=0.32]{plot4}
+\caption{Average Precision for ProbFuse considering different k segments in different topics}
+\label{Average Precision for ProbFuse considering different k segments in different topics}
+\end{figure}
+
 \begin{table}[h!]
 \centering
 \caption{ProbFuse MAP values}
@@ -135,7 +141,7 @@ k=110 & k=90 & k=70 & k=50 & k=20\\ \hline
 \end{table}
 
 Furthermore, we have noticed that all the assessment values obtained through the different measures aren’t very similar with those ones of the standard rank fusion strategies. \\
-In the better ProbFuse obtained (considering one hundred and ten segments) we have observed better results for topics from 354 to 356, from 362 to 365, from 368 to 371 and for 380. This can be seen by observing the plot in the Fig.2. 
+In the better ProbFuse obtained (considering one hundred and ten segments) we have observed better results for topics from 354 to 356, from 362 to 365, from 368 to 371 and for 380. \\ This can be seen by observing the plot in the Fig.3.
 
 \begin{figure}
 \includegraphics[scale=0.32]{plot2}
@@ -203,7 +209,7 @@ By assessing the fused result set given by the different strategies adopted, we 
 
 \textbf{IX.	PROBFUSE VARIATION}
 
-In this other ProbFuse implemention we have considered run's subparts of each individual model containing k documents instead to divide runs in k segments. We have considered different sizes for these subparts, in particular we have tested them considering fifteen, twenty, thirty and fifty documents. In the assessment phase we have obtained the best results with subparts of fifteen documents. In general, results obtained by considering all the assessment measures have been lower than original ProbFuse algorithm, but for a few specific topics the output results have been even better than those obtained through standard rank fusion algorithms implemented. 
+In this other ProbFuse implemention we have considered run's subparts of each individual model containing k documents instead to divide runs in k segments. We have considered different sizes for these subparts, in particular we have tested them considering fifteen, twenty, thirty and fifty documents. In the assessment phase we have obtained the best results with subparts of fifteen documents. In general, results obtained by considering all the assessment measures have been lower than original ProbFuse algorithm as can be seen by Fig.4, but for a few specific topics the output results have been even better than those obtained through standard rank fusion algorithms implemented. 
 
 \begin{table}[h!]
 \centering
