@@ -1,0 +1,11 @@
+\subsection{Algoritmo}
+\begin{frame}{ProbFuse - Algoritmo}
+	\begin{enumerate}
+		\item Suddivisione di ogni topic di ogni run in x segmenti
+		\item Per ogni segmento calcolare la probabilità che un documento sia rilevante usando la formula
+			\[P(d_k\mid m)=\frac{R_k}{R_k+NR_k}\]
+		\item Somma sulle varie run delle probabilità precedentemente calcolate con peso $\frac{1}{k}$, dove k è il numero del segmento in cui compare
+			\[s_d=\sum_{m\in M}\frac{P(d_k\mid m)}{k}\]
+		\item Lo score finale è il risultato della somma
+	\end{enumerate}
+\end{frame}
