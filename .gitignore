@@ -132,8 +132,9 @@ sympy-plots-for-*.tex/
 
 #Other
 *.pdf
-
 res/listOfSections.tex
-
 Tesi.zip
 bin/*
+develop/rankFusion-IRProject/.idea/*
+*.class
+
